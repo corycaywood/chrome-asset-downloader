@@ -1,0 +1,21 @@
+<html ng-app="assetDownloader">
+<body>
+
+<h1>Asset Downloader</h1>
+<p>Files will be saved to your default Downloads directory in a folder named "<span id="folderName"></span>".
+<div id="sources"></div>
+
+<div ng-controller="Assets as assets" id="assetDownloader">
+	
+	<div class="stylesheet-item" ng-repeat="stylesheet in stylesheets">
+		<span class="url">{{stylesheet.stylesheet}} </span>
+        <button ng-click="assets.downloadAllAssetsApp(stylesheet.images, 'images');assets.downloadAllAssetsApp(stylesheet.fonts, 'fonts')" ng-show="(stylesheet.images.length > 0) || (stylesheet.fonts.length > 0)">Download All</button>
+	</div>
+    
+</div>
+
+<script src="js/angular.min.js"></script> 
+<script src="js/app.js"></script> 
+<script src="js/contentScript.js"></script>
+</body>
+</html>
