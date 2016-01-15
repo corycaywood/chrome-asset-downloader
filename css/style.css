@@ -1,0 +1,34 @@
+
+	/* Buttons */
+	.button-wrap {position: relative; padding-right: 100px;}
+	.button-wrap button {position: absolute; right: 0;}
+	
+	/* Heading */
+	.text {display: inline-block;}
+	.panel-heading {min-height: 56px;}
+
+	/* Expand Button */
+	.expand {display: inline-block; width: 25px; cursor: pointer;}
+	.expand .collapse-icon, 
+	.expand.expanded .expand-icon {display: none;}
+	.expand.expanded .collapse-icon {display: inline;}
+		/* Expandable items */
+		.expandable {display: none;}
+		.expandable.expanded {display: block;}
+		
+	/* URLs */
+	.url {padding-left: 25px; word-break: break-word;}
+	.url a {font-size: 0.75em; color: #999;}
+		
+	/* Categories */
+	.categories {padding-top: 0; padding-bottom: 0;}
+	.sub-parent {padding: 20px 0; min-height: 60px;}
+	.sub-parent .text {text-transform: capitalize;}
+	.sub-parent button {top: 12px;}
+	.category:after {content: ""; border-bottom: 1px solid #ddd; display: block; margin-left: -15px; margin-right: -15px;}
+	.category:last-child:after {display: none;}
+		
+	/* Stylesheet Items */
+	.stylesheet-item-wrap {padding-left: 25px;}
+	.stylesheet-item {position: relative; padding: 15px 0; border-top: 1px solid #eee; min-height: 72px;}
+	.stylesheet-item .text {padding: 0;}

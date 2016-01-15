@@ -6,8 +6,7 @@
 */
 
 
-var REGEX = /url\([^\)]*?(\.jpg|\.png|\.gif|\.eot|\.woff|\.woff2|\.svg|\.otf|\.ttf)[^\)]*?\)/ig,
-    FONT_REGEX = /url\([^\)]*?(\.eot|\.woff|\.woff2|\.svg|\.otf|\.ttf)[^\)]*?\)/ig,
+var FONT_REGEX = /url\([^\)]*?(\.eot|\.woff|\.woff2|\.svg|\.otf|\.ttf)[^\)]*?\)/ig,
     IMAGE_REGEX = /url\([^\)]*?(\.jpg|\.png|\.gif)[^\)]*?\)/ig,
 	window_url,
 	folder_name;
@@ -109,8 +108,9 @@ function getUrlsFromStylesheet(stylesheet, stylesheet_url) {
 
 	//Build urls object
 	urls.stylesheet = stylesheet_url;
-	urls.fonts = fixUrls(stylesheet.match(FONT_REGEX), hostname);
-	urls.images = fixUrls(stylesheet.match(IMAGE_REGEX), hostname);
+	urls.categories = {};
+	urls.categories.fonts = fixUrls(stylesheet.match(FONT_REGEX), hostname);
+	urls.categories.images = fixUrls(stylesheet.match(IMAGE_REGEX), hostname);
 	
 	return urls;
 }
