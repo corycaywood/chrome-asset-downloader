@@ -8,10 +8,12 @@ function setResources(res, folder){
 }
 
 
-function doneDownloading() {
-	window.alert('done downloading')
+function doneDownloadingFile() {
+	
+	var scope = angular.element(document.getElementById('assetDownloader')).scope();
+	
+	
 }
-
 
 
 

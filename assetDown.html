@@ -24,7 +24,7 @@
 							<div class="button-wrap">
 								<!-- Expand Button -->
 								<span class="expand" 
-									ng-click="stylesheet.expanded = assets.toggleExpand(stylesheet.expanded);" 
+									ng-click="stylesheet.expanded = assets.toggleBoolean(stylesheet.expanded);" 
 									ng-class="stylesheet.expanded ? 'expanded' : ''">
 									<span 
 										ng-show="assets.hasAssets(stylesheet.categories.images) || assets.hasAssets(stylesheet.categories.fonts)">
@@ -34,11 +34,17 @@
 								</span><!-- Text --><span class="text">
 									{{assets.getFileName(stylesheet.stylesheet)}}
 								</span><!-- Download Button --><button class="btn btn-primary" 
-									ng-click="assets.downloadAllAssetsApp(stylesheet.categories.images, 'images');assets.downloadAllAssetsApp(stylesheet.categories.fonts, 'fonts')" 
+									ng-click="stylesheet.progressIsVisible = assets.toggleBoolean(stylesheet.progressIsVisible);assets.downloadAllAssets(stylesheet.categories.images, 'images', $index);assets.downloadAllAssets(stylesheet.categories.fonts, 'fonts')" 
 									ng-show="assets.hasAssets(stylesheet.categories.images) || assets.hasAssets(stylesheet.categories.fonts)">
 									Download All
 								</button>
-								<div class="url"><a href="{{stylesheet.stylesheet}}">{{stylesheet.stylesheet}}</a></div>
+								<div class="url"><a target="_blank" href="{{stylesheet.stylesheet}}">{{stylesheet.stylesheet}}</a></div>
+							</div>
+							<!-- Progress Bar -->
+							<div class="progress" ng-class="stylesheet.progressIsVisible ? '' : 'hidden'">
+								<div class="progress-bar progress-bar-success" ng-class="stylesheet.downloaded ? '' : 'progress-bar-striped active'" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: {{stylesheet.downloadPercent}}%">
+									<span class="sr-only">{{stylesheet.downloadPercent}}% Complete (success)</span>
+								</div>
 							</div>
 						</div>
 						
@@ -51,7 +57,7 @@
 								<div class="sub-parent button-wrap">
 									<!-- Expand button -->
 									<span class="expand" 
-										ng-click="category.expanded = assets.toggleExpand(category.expanded);" ng-class="category.expanded ? 'expanded' : ''">
+										ng-click="category.expanded = assets.toggleBoolean(category.expanded);" ng-class="category.expanded ? 'expanded' : ''">
 										<!-- Icons -->
 										<span ng-show="assets.hasAssets(category)">
 											<i class="expand-icon">+</i>
@@ -62,10 +68,16 @@
 									</span>
 									<!-- Download Button -->
 									<button class="btn btn-primary" 
-										ng-click="assets.downloadAllAssetsApp(category, category_name)" 
+										ng-click="assets.downloadAllAssetsCategory(category, category_name)" 
 										ng-show="assets.hasAssets(category)">
 										Download All
 									</button>
+									<!-- Progress Bar -->
+									<div class="progress" ng-class="category.progressIsVisible ? '' : 'hidden'">
+										<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: {{category.downloadPercent}}%">
+											<span class="sr-only">{{category.downloadPercent}}% Complete (success)</span>
+										</div>
+									</div>
 								</div>
 								<!-- Asset items -->
 								<div class="stylesheet-item-wrap expandable" 

@@ -3,12 +3,38 @@ var app = angular.module('assetDownloader', []);
 
 app.controller('Assets', function($scope){
     
-    this.downloadAllAssetsApp = function(assets, folder) {
-        downloadAllAssets(assets, folder);
+    this.downloadAllAssetsCategory = function(assets, folder, index) {
+		if (assets.length > 0 ) {
+			downloadAsset(assets.length - 1);
+		}
+		function downloadAsset(count) {
+			//Download Resource
+			downloadAssetApp(assets[count], folder, index, count, assets.length, function(){
+				//Recursively download - so it will download one at a time
+				if (count > 0) {
+					downloadAsset(count - 1);
+				}
+			})
+		}
+    }
+	
+    this.downloadAllAssets = function(assets, folder, index) {
+		if (assets.length > 0 ) {
+			downloadAsset(assets.length - 1);
+		}
+		function downloadAsset(count) {
+			//Download Resource
+			downloadAssetApp(assets[count], folder, index, count, assets.length, function(){
+				//Recursively download - so it will download one at a time
+				if (count > 0) {
+					downloadAsset(count - 1);
+				}
+			})
+		}
     }
 	
     this.downloadSingleAssetApp = function(asset, folder) {
-        downloadSingleAsset(asset, folder);
+        downloadAssetApp(asset, folder);
     }
 	
 	this.hasAssets = function(assets) {
@@ -18,8 +44,8 @@ app.controller('Assets', function($scope){
 		return false;
 	}
 	
-	//Expand Function
-	this.toggleExpand = function(expand) {
+	//Toggle Function
+	this.toggleBoolean = function(expand) {
 		if (typeof expand  == "undefined")
 			return true;
 			
@@ -39,12 +65,10 @@ app.controller('Assets', function($scope){
 				"src: url(" + url + ")" +
 				"}" +
 				"</style>" +
-				"<div style='font-family: font" + fontName + "; font-size:16px;'>Grumpy wizards make toxic brew for the evil Queen and Jack.</div>";
+				"<div class='font-example' style='font-family: font" + fontName + ";'>Grumpy wizards make toxic brew for the evil Queen and Jack.</div>";
 		}
 		return element;
 	}
-	
-
 	
 	//Get File Name Function
 	this.getFileName = function(url) {
@@ -58,25 +82,43 @@ app.controller('Assets', function($scope){
 
 
 app.filter("sanitize", ['$sce', function($sce) {
-  return function(htmlCode){
-    return $sce.trustAsHtml(htmlCode);
-  }
+	return function(htmlCode){
+		return $sce.trustAsHtml(htmlCode);
+	}
 }]);
+	
 
 
-	var getRandomNum = function(){
-		return Math.floor((Math.random()*100000)+1);
+/* Global Functions 
+***********************/
+	var downloadAssetApp = function(asset, folder, index, count, length, callback) {
+		downloadSingleAsset(asset, folder, index, count, length);
+
+		document.addEventListener("doneDownloadingFile" + index + "" + count, function(e) {
+			setPercentage(index, ((length - (count)) / length * 100));
+			
+			if (((length - (count)) / length * 100) == 100) {
+				setDownloadDone(index);
+			}
+			
+		});
+		
+		if (typeof callback == "function" ) {
+			callback();
+		}
 	}
 
-
-// app.filter("randomize", ['$sce', function() {
+	var setPercentage = function(index, percent){
+		var scope = angular.element(document.getElementById('assetDownloader')).scope();
+		scope.$apply(function(){scope.stylesheets[index].downloadPercent = percent});
+	}
 	
-// return function(input, scope) {
-// 	return Math.floor((Math.random()*input)+1);
-// }
-
-// }]);
-
+	var setDownloadDone = function(index){
+		window.setTimeout(function(){
+			var scope = angular.element(document.getElementById('assetDownloader')).scope();
+			scope.$apply(function(){scope.stylesheets[index].downloaded = true});
+		}, 500)
+	}
 
 
 

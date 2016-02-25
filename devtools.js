@@ -28,6 +28,8 @@ chrome.devtools.panels.create(
 			if (_window) {
 				if (msg.action == "doneDownloading") {
 					_window.doneDownloading();
+				} else if (msg.action == "doneDownloadingFile") {
+					_window.doneDownloadingFile();
 				}
 			} else {
 				data.push(msg);
@@ -58,7 +60,7 @@ chrome.devtools.panels.create(
             
             //Get inspected window title for folder name
             chrome.devtools.inspectedWindow.eval("document.title", function(result) {
-				folder_name = result.replace(/\s/g, "_").replace(/\|/g, "");
+				folder_name = result.replace(/\s/g, "_").replace(/\|/g, "").replace(/\:/g, "");
 			});
             
 			//Get Stylesheet links
@@ -82,15 +84,19 @@ chrome.devtools.panels.create(
                 }
                 
 			})
-				
-			// Download All Items function
-			_window.downloadAllAssets = function(assets, folder) {
-				port.postMessage({action: "downloadAllAssets", assets: assets, length: (assets.length - 1), folder: folder_name + "_Assets/" + folder});
-			};
 			
 			// Download Single Item function
-			_window.downloadSingleAsset = function(asset, folder) {
-				port.postMessage({action: "downloadSingleAsset", asset: asset, folder: folder_name + "_Assets/" + folder});
+			_window.downloadSingleAsset = function(asset, folder, index, count) {
+				port.postMessage({action: "downloadSingleAsset", id: + index + "" + count, asset: asset, folder: folder_name + "_Assets/" + folder});
+				
+				port.onMessage.addListener(function(msg) {
+					if (msg.action == "doneDownloadingFile" + index + "" + count) {
+						//Send finished event to panel
+						var event = new CustomEvent("doneDownloadingFile" + index + "" + count);
+						_window.document.dispatchEvent(event);
+					}
+				});
+				
 			};
 			
 		});

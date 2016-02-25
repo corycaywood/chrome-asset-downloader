@@ -1,14 +1,14 @@
 
 	/* Buttons */
-	.button-wrap {position: relative; padding-right: 100px;}
+	.button-wrap {position: relative; padding-right: 120px;}
 	.button-wrap button {position: absolute; right: 0;}
 	
 	/* Heading */
-	.text {display: inline-block;}
+	.text {display: inline-block; word-break: break-word; padding-left: 25px;}
 	.panel-heading {min-height: 56px;}
 
 	/* Expand Button */
-	.expand {display: inline-block; width: 25px; cursor: pointer;}
+	.expand {position: absolute; display: inline-block; width: 25px; cursor: pointer;}
 	.expand .collapse-icon, 
 	.expand.expanded .expand-icon {display: none;}
 	.expand.expanded .collapse-icon {display: inline;}
@@ -32,3 +32,9 @@
 	.stylesheet-item-wrap {padding-left: 25px;}
 	.stylesheet-item {position: relative; padding: 15px 0; border-top: 1px solid #eee; min-height: 72px;}
 	.stylesheet-item .text {padding: 0;}
+	.stylesheet-item img {max-width: 100%; margin: 20px 0 10px;}
+		/* Font example */
+		.stylesheet-item .font-example {margin: 25px 0 10px; font-size:16px;}
+	
+	/* Progress Bar */
+	.progress {margin-top: 20px;}
