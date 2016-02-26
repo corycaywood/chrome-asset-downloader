@@ -34,7 +34,7 @@
 								</span><!-- Text --><span class="text">
 									{{assets.getFileName(stylesheet.stylesheet)}}
 								</span><!-- Download Button --><button class="btn btn-primary" 
-									ng-click="stylesheet.progressIsVisible = assets.toggleBoolean(stylesheet.progressIsVisible);assets.downloadAllAssets(stylesheet.categories.images, 'images', $index);assets.downloadAllAssets(stylesheet.categories.fonts, 'fonts')" 
+									ng-click="stylesheet.progressIsVisible = assets.toggleBoolean(stylesheet.progressIsVisible); assets.downloadFontsAndImages(stylesheet.categories, $index)" 
 									ng-show="assets.hasAssets(stylesheet.categories.images) || assets.hasAssets(stylesheet.categories.fonts)">
 									Download All
 								</button>
@@ -42,8 +42,16 @@
 							</div>
 							<!-- Progress Bar -->
 							<div class="progress" ng-class="stylesheet.progressIsVisible ? '' : 'hidden'">
-								<div class="progress-bar progress-bar-success" ng-class="stylesheet.downloaded ? '' : 'progress-bar-striped active'" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: {{stylesheet.downloadPercent}}%">
-									<span class="sr-only">{{stylesheet.downloadPercent}}% Complete (success)</span>
+								<div class="progress-bar progress-bar-success" ng-class="(stylesheet.categories.images.downloaded || stylesheet.categories.fonts.downloaded) ? 'complete' : 'progress-bar-striped active'" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 
+									{{((assets.convertUndefinedToNum(stylesheet.categories.images.downloadPercent) / 100 * stylesheet.categories.images.length 
+											+ assets.convertUndefinedToNum(stylesheet.categories.fonts.downloadPercent) / 100 * stylesheet.categories.fonts.length) 
+											/ (stylesheet.categories.images.length + stylesheet.categories.fonts.length) 
+										) * 100}}%">
+									<span class="sr-only">{{((assets.convertUndefinedToNum(stylesheet.categories.images.downloadPercent) / 100 * stylesheet.categories.images.length 
+											+ assets.convertUndefinedToNum(stylesheet.categories.fonts.downloadPercent) / 100 * stylesheet.categories.fonts.length) 
+											/ (stylesheet.categories.images.length + stylesheet.categories.fonts.length) 
+										) * 100}}% Complete (success)
+									</span>
 								</div>
 							</div>
 						</div>
@@ -68,13 +76,13 @@
 									</span>
 									<!-- Download Button -->
 									<button class="btn btn-primary" 
-										ng-click="assets.downloadAllAssetsCategory(category, category_name)" 
+										ng-click="category.progressIsVisible = assets.toggleBoolean(category.progressIsVisible); assets.downloadAllAssets(category, category_name, stylesheets.indexOf(stylesheet))" 
 										ng-show="assets.hasAssets(category)">
 										Download All
 									</button>
 									<!-- Progress Bar -->
 									<div class="progress" ng-class="category.progressIsVisible ? '' : 'hidden'">
-										<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: {{category.downloadPercent}}%">
+										<div class="progress-bar progress-bar-success" ng-class="category.downloaded ? 'complete' : 'progress-bar-striped active'" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: {{category.downloadPercent}}%">
 											<span class="sr-only">{{category.downloadPercent}}% Complete (success)</span>
 										</div>
 									</div>
@@ -108,6 +116,5 @@
 
 		<script src="js/angular.min.js"></script> 
 		<script src="js/app.js"></script> 
-		<script src="js/contentScript.js"></script>
 	</body>
 </html>

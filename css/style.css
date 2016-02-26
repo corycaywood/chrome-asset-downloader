@@ -38,3 +38,4 @@
 	
 	/* Progress Bar */
 	.progress {margin-top: 20px;}
+	.progress-bar.complete {width: 100% !important;}
