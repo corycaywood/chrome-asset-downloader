@@ -88,7 +88,6 @@ chrome.devtools.panels.create(
 			// Download Single Item function
 			_window.downloadSingleAsset = function(asset, folder, index, count) {
 				port.postMessage({action: "downloadSingleAsset", id: + index + "" + count, asset: asset, folder: folder_name + "_Assets/" + folder});
-				
 				port.onMessage.addListener(function(msg) {
 					if (msg.action == "doneDownloadingFile" + index + "" + count) {
 						//Send finished event to panel
@@ -96,8 +95,20 @@ chrome.devtools.panels.create(
 						_window.document.dispatchEvent(event);
 					}
 				});
-				
 			};
+            
+            // Get Data Uri
+            _window.getDataUriXhr = function(url, index, count) {
+
+				port.postMessage({action: "getDataUriXhr", url: url, id: index + "" + count});
+				port.onMessage.addListener(function(msg) {
+					if (msg.action == "returnDataUri" + index + "" + count) {
+						//Send finished event to panel
+						var event = new CustomEvent("returnDataUri", {detail : {data: msg.data, index: index, count: count}});
+						_window.document.dispatchEvent(event);
+					}
+				});
+            }
 			
 		});
 
@@ -123,7 +134,8 @@ function getUrlsFromStylesheet(stylesheet, stylesheet_url) {
 
 
 function fixUrls(assets, hostname) {
-	var urls = [];
+	var urls = [],
+        urlCheck = [];
 		if (assets != null) {
 		assets.forEach(function(item, index) {
 			//Modify the URL from stylesheet
@@ -138,8 +150,10 @@ function fixUrls(assets, hostname) {
 			var resource_object = new URL(resource, host);
 			
 			// Add to urls array if it isn't there yet
-			if (urls.indexOf(resource_object.href) == -1) {
-				urls.push(resource_object.href);
+			if (urlCheck.indexOf(resource_object.href) == -1) {
+                var returnObj = {url : resource_object.href};
+				urls.push(returnObj);
+                urlCheck.push(resource_object.href);
 			}
 		})
 	}

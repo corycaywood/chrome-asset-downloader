@@ -31,10 +31,12 @@
 	/* Stylesheet Items */
 	.stylesheet-item-wrap {padding-left: 25px;}
 	.stylesheet-item {position: relative; padding: 15px 0; border-top: 1px solid #eee; min-height: 72px;}
-	.stylesheet-item .text {padding: 0;}
-	.stylesheet-item img {max-width: 100%; margin: 20px 0 10px;}
+	.stylesheet-item .text {padding: 0 105px 0 0; font-weight: bold;}
+    .stylesheet-item button {top: 20px;}
+	.stylesheet-item img {max-width: 100%; margin: 10px 0;}
+    .stylesheet-item a {cursor: pointer;}
 		/* Font example */
-		.stylesheet-item .font-example {margin: 25px 0 10px; font-size:16px;}
+		.stylesheet-item .font-example {margin: 10px 0; font-size:18px;}
 	
 	/* Progress Bar */
 	.progress {margin-top: 20px;}

@@ -15,7 +15,7 @@
 
 			<!-- Stylesheet - repeatable for each stylesheet -->
 			<div class="row" 
-				ng-repeat="stylesheet in stylesheets">
+				ng-repeat="stylesheet in stylesheets" ng-show="stylesheet.stylesheet.length > 0">
 				<div class="col-xs-12">
 					<div class="panel panel-default">
 						
@@ -61,11 +61,11 @@
 							ng-class="stylesheet.expanded ? 'expanded' : ''">
 							
 							<!-- Repeat for images and fonts categories -->
-							<div class="category {{category_name}}" ng-repeat="(category_name, category) in stylesheet.categories">
+							<div class="category {{category_name}}" ng-repeat="(category_name, category) in stylesheet.categories" ng-show="category.length > 0">
 								<div class="sub-parent button-wrap">
 									<!-- Expand button -->
 									<span class="expand" 
-										ng-click="category.expanded = assets.toggleBoolean(category.expanded);" ng-class="category.expanded ? 'expanded' : ''">
+										ng-click="category.expanded = assets.toggleBoolean(category.expanded); assets.getFontDataUris(category, stylesheets.indexOf(stylesheet), category_name)" ng-class="category.expanded ? 'expanded' : ''">
 										<!-- Icons -->
 										<span ng-show="assets.hasAssets(category)">
 											<i class="expand-icon">+</i>
@@ -94,15 +94,23 @@
 										ng-repeat="item in category">
 										<!-- Filename text -->
 										<span class="text">
-											{{assets.getFileName(item)}}
+											<a ng-click="assets.downloadSingleAssetApp(item.url, category_name)">{{assets.getFileName(item.url)}}</a>
 										</span>
-										<!-- Download Button -->
-										<button class="btn btn-default" 
-											ng-click="assets.downloadSingleAssetApp(item, category_name)">
-											Download
-										</button>
-										<div ng-bind-html="assets.getPreviewElement(category_name, item, $index) | sanitize"></div>
-
+										<div ng-show="category_name == 'images'">
+                                            <img src="{{item.url}}">
+                                        </div>
+										<div ng-show="category_name == 'fonts'">
+                                            <style>
+                                                .class-{{assets.getFileName(item.url).split('.')[0]}} {
+                                                    font-family: font{{assets.getFileName(item.url).split('.')[0]}};
+                                                }
+                                                @font-face {
+                                                    font-family: font{{assets.getFileName(item.url).split('.')[0]}};
+                                                    src: url({{item.dataUri}})
+                                                }
+                                            </style>
+                                            <div class='font-example' ng-class="'class-' + assets.getFileName(item.url).split('.')[0]">Grumpy wizards make toxic brew for the evil Queen and Jack.</div>
+                                        </div>
 									</div>
 								</div>
 							</div>

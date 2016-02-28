@@ -41,23 +41,6 @@ app.controller('Assets', function($scope){
 		return number;
 	}
 	
-	this.getPreviewElement = function(type, url) {
-		var element;
-		if (type == "images") {
-			element = "<img src='" + url + "'>";
-		} else if (type == "fonts") {
-			var fontName = this.getFileName(url).split('.')[0];
-			element = "<style>" +
-				"@font-face {" +
-				"font-family: font" + fontName + "; " +
-				"src: url(" + url + ")" +
-				"}" +
-				"</style>" +
-				"<div class='font-example' style='font-family: font" + fontName + ";'>Grumpy wizards make toxic brew for the evil Queen and Jack.</div>";
-		}
-		return element;
-	}
-	
 	//Get File Name Function
 	this.getFileName = function(url) {
 		url = url.substring(0, (url.indexOf("#") == -1) ? url.length : url.indexOf("#"));
@@ -65,6 +48,20 @@ app.controller('Assets', function($scope){
 		url = url.substring(url.lastIndexOf("/") + 1, url.length);
 		return url;
 	}
+    
+    /* Set Font Data Uris to scope */
+    this.getFontDataUris = function(items, index, category_name){
+        if (category_name == "fonts" && typeof $scope.stylesheets[index].categories.fonts[0].dataUri == "undefined") {
+            document.addEventListener("returnDataUri", function(e) {
+              $scope.$apply(function(){ $scope.stylesheets[e.detail.index].categories.fonts[e.detail.count].dataUri = e.detail.data;});
+            });
+            
+            for (var i = 0; i < items.length; i++) {
+                getDataUriXhr(items[i].url, index, i);
+            }
+        }
+    }
+    
     
 });
 
@@ -89,7 +86,7 @@ app.filter("sanitize", ['$sce', function($sce) {
 		}
 		function downloadAsset(count) {
 			//Download Resource
-			downloadAssetApp(assets[count], folder, index, count, assets.length, function(){
+			downloadAssetApp(assets[count].url, folder, index, count, assets.length, function(){
 				//Recursively download - so it will download one at a time
 				if (count > 0) {
 					downloadAsset(count - 1);
