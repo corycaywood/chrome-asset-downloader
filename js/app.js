@@ -4,12 +4,16 @@ var app = angular.module('assetDownloader', []);
 app.controller('Assets', function($scope){
 	
 	this.downloadFontsAndImages = function(assets, index) {
+        $scope.stylesheets[index].progressIsVisible = true;
+        $scope.stylesheets[index].categories.images.progressIsVisible = true;
 		downloadAllAssetsApp(assets.fonts, 'fonts', index, function(){
-			downloadAllAssetsApp(assets.images, 'images', index);
-		});
+            $scope.stylesheets[index].categories.fonts.progressIsVisible = true;
+            downloadAllAssetsApp(assets.images, 'images', index);
+        });
 	}
 	
     this.downloadAllAssets = function(assets, folder, index) {
+        $scope.stylesheets[index].categories[folder].progressIsVisible = true;
 		downloadAllAssetsApp(assets, folder, index);
     }
 	
@@ -51,11 +55,10 @@ app.controller('Assets', function($scope){
     
     /* Set Font Data Uris to scope */
     this.getFontDataUris = function(items, index, category_name){
+        document.addEventListener("returnDataUri" + index, function(e) {
+            $scope.$apply(function(){ $scope.stylesheets[e.detail.index].categories.fonts[e.detail.count].dataUri = e.detail.data;});
+        });
         if (category_name == "fonts" && typeof $scope.stylesheets[index].categories.fonts[0].dataUri == "undefined") {
-            document.addEventListener("returnDataUri", function(e) {
-              $scope.$apply(function(){ $scope.stylesheets[e.detail.index].categories.fonts[e.detail.count].dataUri = e.detail.data;});
-            });
-            
             for (var i = 0; i < items.length; i++) {
                 getDataUriXhr(items[i].url, index, i);
             }
@@ -100,17 +103,17 @@ app.filter("sanitize", ['$sce', function($sce) {
 
 	var downloadAssetApp = function(asset, folder, index, count, length, callback) {
 		downloadSingleAsset(asset, folder, index, count, length);
-		document.addEventListener("doneDownloadingFile" + index + "" + count, function(e) {
-			//Callback to set progress bar percentage and download state
-			setPercentage(folder, index, ((length - (count)) / length * 100));
-			if (((length - (count)) / length * 100) == 100) {
-				setDownloadDone(folder, index);
-			}
-		});
-		if (typeof callback == "function" ) {
-			callback();
-		}
+        if (typeof callback == "function" ) {
+            callback();
+        }
 	}
+    //Callback to set progress bar percentage and download state
+    var doneDownloadingFile = function(e){
+        setPercentage(e.folder, e.index, ((e.length - (e.count)) / e.length * 100));
+        if (((e.length - (e.count)) / e.length * 100) == 100) {
+            setDownloadDone(e.folder, e.index);
+        }
+    }
 	
 	/* Set the resources from stylesheet to the scope's stylesheet object */
 	function setResources(res, folder){
@@ -133,3 +136,8 @@ app.filter("sanitize", ['$sce', function($sce) {
 		}, 500)
 	}
 
+    /* Set Data Uri's for fonts */
+    var setFontDataUri = function(e) {
+        var scope = angular.element(document.getElementById('assetDownloader')).scope();
+        scope.$apply(function(){scope.stylesheets[e.index].categories.fonts[e.count].dataUri = e.data;});
+    }

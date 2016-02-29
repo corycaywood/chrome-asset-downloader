@@ -26,17 +26,17 @@ chrome.devtools.panels.create(
 			// Write information to the panel, if exists.
 			// If we don't have a panel reference (yet), queue the data.
 			if (_window) {
-				if (msg.action == "doneDownloading") {
-					_window.doneDownloading();
-				} else if (msg.action == "doneDownloadingFile") {
-					_window.doneDownloadingFile();
-				}
+				 if (msg.action == "doneDownloadingFile") {
+                     // Callback to window after file download
+                    _window.doneDownloadingFile({index: msg.index, count: msg.count, folder: msg.type, length: msg.length});
+				} else if (msg.action =="returnDataUri") {
+                    // Callback to window with font Data URI
+                    _window.setFontDataUri({data: msg.data, index: msg.index, count: msg.count});
+                }
 			} else {
 				data.push(msg);
 			}
-			
 		});
-		
 		
 
 		extensionPanel.onShown.addListener(function tmp(panelWindow) {
@@ -86,28 +86,13 @@ chrome.devtools.panels.create(
 			})
 			
 			// Download Single Item function
-			_window.downloadSingleAsset = function(asset, folder, index, count) {
-				port.postMessage({action: "downloadSingleAsset", id: + index + "" + count, asset: asset, folder: folder_name + "_Assets/" + folder});
-				port.onMessage.addListener(function(msg) {
-					if (msg.action == "doneDownloadingFile" + index + "" + count) {
-						//Send finished event to panel
-						var event = new CustomEvent("doneDownloadingFile" + index + "" + count);
-						_window.document.dispatchEvent(event);
-					}
-				});
+			_window.downloadSingleAsset = function(asset, folder, index, count, length) {
+				port.postMessage({action: "downloadSingleAsset", asset: asset, folder: folder_name + "_Assets/" + folder, type: folder, index: index, count: count, length: length});
 			};
             
             // Get Data Uri
             _window.getDataUriXhr = function(url, index, count) {
-
-				port.postMessage({action: "getDataUriXhr", url: url, id: index + "" + count});
-				port.onMessage.addListener(function(msg) {
-					if (msg.action == "returnDataUri" + index + "" + count) {
-						//Send finished event to panel
-						var event = new CustomEvent("returnDataUri", {detail : {data: msg.data, index: index, count: count}});
-						_window.document.dispatchEvent(event);
-					}
-				});
+				port.postMessage({action: "getDataUriXhr", url: url, index: index, count: count});
             }
 			
 		});

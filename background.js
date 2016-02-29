@@ -14,10 +14,12 @@ chrome.runtime.onConnect.addListener(function(port) {
     port.onMessage.addListener(function(msg) {
         //Download Assets
 		if (msg.action == "downloadSingleAsset") {
-			downloadSingleAsset(msg.asset, msg.folder, msg.id)
+			downloadSingleAsset(msg.asset, msg.folder, function(){
+                notifyDevtools({action: "doneDownloadingFile", index: msg.index, count: msg.count, type: msg.type, length: msg.length});
+            })
 		} else if (msg.action == "getDataUriXhr") {
             getDataUriXhr(msg.url, function(dataUri){
-                notifyDevtools({action: "returnDataUri" + msg.id, data: dataUri});
+                notifyDevtools({action: "returnDataUri", data: dataUri, index: msg.index, count: msg.count});
             });
 
         }
@@ -28,17 +30,17 @@ chrome.runtime.onConnect.addListener(function(port) {
 // Function to send a message to all devtools.html views:
 function notifyDevtools(msg) {
     ports.forEach(function(port) {
-		console.log(msg)
         port.postMessage(msg);
     });
 }
 
 
 //Download Single Asset function
-function downloadSingleAsset(asset, folder, id){
-	console.log(asset)
-	chrome.downloads.download({url: asset, filename: folder + "/" + getFileName(asset)},function(downloadId){
-		notifyDevtools({action: "doneDownloadingFile" + id});
+function downloadSingleAsset(asset, folder, callback){
+	chrome.downloads.download({url: asset, filename: folder + "/" + getFileName(asset)}, function(downloadId){
+        if (typeof callback == "function") {
+            callback();
+        }
 	});
 }
 
