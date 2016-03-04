@@ -92,10 +92,6 @@
 									ng-class="category.expanded ? 'expanded' : ''">
 									<div class="stylesheet-item button-wrap" 
 										ng-repeat="item in category">
-										<!-- Filename text -->
-										<span class="text">
-											<a ng-click="assets.downloadSingleAssetApp(item.url, category_name)">{{assets.getFileName(item.url)}}</a>
-										</span>
 										<div ng-show="category_name == 'images'">
                                             <img src="{{item.url}}">
                                         </div>
@@ -110,7 +106,11 @@
                                                 }
                                             </style>
                                             <div class='font-example' ng-class="'class-' + assets.getFileName(item.url).split('.')[0]">Grumpy wizards make toxic brew for the evil Queen and Jack.</div>
+											<!-- Filename text -->
                                         </div>
+										<div class="url">
+											<a ng-click="assets.downloadSingleAssetApp(item.url, category_name)">{{assets.getFileName(item.url)}}</a>
+										</div>
 									</div>
 								</div>
 							</div>

@@ -60,7 +60,11 @@ function getDataUriXhr(url, callback) {
         if (req.readyState == 4 /* complete */) {
             if (req.status == 200) {
                 if (typeof callback === "function"){
-                    callback("data:" + req.getResponseHeader('content-type') + ";charset=utf-8;base64," + convertToBase64(req.response));
+					var contentType = req.getResponseHeader('content-type');
+					if (contentType.indexOf("text/plain") > -1) {
+						contentType = "font/x-woff"
+					}
+                    callback("data:" + contentType + ";charset=utf-8;base64," + convertToBase64(req.response));
                 }
             }
         }

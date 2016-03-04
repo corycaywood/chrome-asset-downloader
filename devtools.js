@@ -133,12 +133,13 @@ function fixUrls(assets, hostname) {
 				resource = resource.replace(/[^/]*\//, "");
 			}
 			var resource_object = new URL(resource, host);
+			var resource_url = resource_object.href.split('?')[0]
 			
 			// Add to urls array if it isn't there yet
-			if (urlCheck.indexOf(resource_object.href) == -1) {
-                var returnObj = {url : resource_object.href};
+			if (urlCheck.indexOf(resource_url) == -1) {
+                var returnObj = {url : resource_url};
 				urls.push(returnObj);
-                urlCheck.push(resource_object.href);
+                urlCheck.push(resource_url);
 			}
 		})
 	}

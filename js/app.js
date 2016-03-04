@@ -55,9 +55,6 @@ app.controller('Assets', function($scope){
     
     /* Set Font Data Uris to scope */
     this.getFontDataUris = function(items, index, category_name){
-        document.addEventListener("returnDataUri" + index, function(e) {
-            $scope.$apply(function(){ $scope.stylesheets[e.detail.index].categories.fonts[e.detail.count].dataUri = e.detail.data;});
-        });
         if (category_name == "fonts" && typeof $scope.stylesheets[index].categories.fonts[0].dataUri == "undefined") {
             for (var i = 0; i < items.length; i++) {
                 getDataUriXhr(items[i].url, index, i);

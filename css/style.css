@@ -4,8 +4,9 @@
 	.button-wrap button {position: absolute; right: 0;}
 	
 	/* Heading */
+	.panel {margin-bottom: 8px;}
 	.text {display: inline-block; word-break: break-word; padding-left: 25px;}
-	.panel-heading {position: relative; min-height: 56px;}
+	.panel-heading {position: relative; min-height: 56px; border: none;}
 
 	/* Expand Button */
 	.expand {position: absolute; display: inline-block; width: 25px; cursor: pointer;}
@@ -18,7 +19,7 @@
 		
 	/* URLs */
 	.url {padding-left: 25px; word-break: break-word;}
-	.url a {font-size: 0.75em; color: #999;}
+	.url a {font-size: 0.75em;}
     
 	/* Progress Bar */
 	.progress {position: absolute; bottom: 0; left: 0; right: 0; border-radius: 0; height: 3px; margin: 0;}
@@ -29,7 +30,7 @@
 	.sub-parent {padding: 20px 0; min-height: 60px;}
 	.sub-parent .text {text-transform: capitalize;}
 	.sub-parent button {top: 12px;}
-	.category:after {content: ""; border-bottom: 1px solid #ddd; display: block; margin-left: -15px; margin-right: -15px;}
+	.category:before {content: ""; border-bottom: 1px solid #ddd; display: block; margin-left: -15px; margin-right: -15px;}
 	.category:last-child:after {display: none;}
         /* Category Progress bar */
         .sub-parent .progress {left: -15px; right: -15px;}
@@ -41,5 +42,6 @@
     .stylesheet-item button {top: 20px;}
 	.stylesheet-item img {max-width: 100%; margin: 10px 0;}
     .stylesheet-item a {cursor: pointer;}
+	.stylesheet-item .url {padding-left: 0;}
 		/* Font example */
-		.stylesheet-item .font-example {margin: 10px 0; font-size:18px;}
+		.stylesheet-item .font-example {font-size:18px;}
