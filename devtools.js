@@ -1,13 +1,15 @@
 /* TODO:
-	- Add angular
-	- tree structure for each stylesheet
-	- parse and get all asset URLs before passing to contenScript - so it doesn't do it twice
+	- Distinguish if .svg is an image or font
+    - Add separate tabs to view all fonts or all images (including images from the HTML)
 	- field for folder name
 */
 
 
-var FONT_REGEX = /url\([^\)]*?(\.eot|\.woff|\.woff2|\.svg|\.otf|\.ttf)[^\)]*?\)/ig,
+var FONT_REGEX = /url\([^\)]*?(\.eot|\.woff|\.woff2|\.otf|\.ttf)[^\)]*?\)/ig,
     IMAGE_REGEX = /url\([^\)]*?(\.jpg|\.png|\.gif)[^\)]*?\)/ig,
+    FONT_SVG_REGEX = /@font-face[^\}]*?\{[^\}]*?(url\([^\)]*?(\.svg)[^\)]*?\)[^\}]*?\})/ig,
+    FONT_SVG_REGEX_STRIP = /url\([^\)]*?(\.svg)[^\)]*?\)/ig,
+    SVG_REGEX = /url\([^\)]*?(\.svg)[^\)]*?\)/ig,
 	window_url,
 	folder_name;
 
@@ -111,29 +113,41 @@ function getUrlsFromStylesheet(stylesheet, stylesheet_url) {
 	//Build urls object
 	urls.stylesheet = stylesheet_url;
 	urls.categories = {};
-	urls.categories.fonts = fixUrls(stylesheet.match(FONT_REGEX), hostname);
-	urls.categories.images = fixUrls(stylesheet.match(IMAGE_REGEX), hostname);
+	urls.categories.fonts = getFixedUrls(stylesheet.match(FONT_REGEX), hostname);
+	urls.categories.images = getFixedUrls(stylesheet.match(IMAGE_REGEX), hostname);
+    
+    //Find SVG Fonts and push to fonts array
+    var svgFonts = stylesheet.match(FONT_SVG_REGEX);
+    if (svgFonts != null) {
+        svgFonts.forEach(function(item, index){
+            var fixedSvg = fixUrl(item.match(FONT_SVG_REGEX_STRIP)[0], hostname);
+            svgFonts[index] = fixedSvg;
+            urls.categories.fonts.push({url: fixedSvg})
+        })
+    }
+    
+    //Find SVG Images and push to images array
+    var svgImages = stylesheet.match(SVG_REGEX);
+    if (svgImages != null) {
+        svgImages.forEach(function(item, index){
+            var fixedSvg = fixUrl(item, hostname);
+            //Make sure the svg isn't a font
+            if (svgFonts == null || svgFonts.indexOf(fixedSvg) == -1) {
+                urls.categories.images.push({url: fixedSvg})
+            }
+        })
+    }
 	
 	return urls;
 }
 
 
-function fixUrls(assets, hostname) {
+function getFixedUrls(assets, hostname) {
 	var urls = [],
         urlCheck = [];
 		if (assets != null) {
 		assets.forEach(function(item, index) {
-			//Modify the URL from stylesheet
-			var resource = assets[index].replace(/url\((.*?)\)/g, '$1').replace(/'/g, "").replace(/"/g, "").replace(/\s/g, "").replace(/^(\/\/)/g, ""),
-				host = hostname;
-				
-			// Change hostname if needed
-			if (resource.match(/^[^/^.][a-zA-Z0-9]*?\.[^/]*?\//) != null) {
-				host = "http://" + resource.match(/[^/]*\//)[0];
-				resource = resource.replace(/[^/]*\//, "");
-			}
-			var resource_object = new URL(resource, host);
-			var resource_url = resource_object.href.split('?')[0]
+            var resource_url = fixUrl(assets[index], hostname);
 			
 			// Add to urls array if it isn't there yet
 			if (urlCheck.indexOf(resource_url) == -1) {
@@ -144,4 +158,19 @@ function fixUrls(assets, hostname) {
 		})
 	}
 	return urls;
+}
+
+function fixUrl(asset, hostname) {
+    //Modify the URL from stylesheet
+    var resource = asset.replace(/url\((.*?)\)/g, '$1').replace(/'/g, "").replace(/"/g, "").replace(/\s/g, "").replace(/^(\/\/)/g, ""),
+        host = hostname;
+        
+    // Change hostname if needed
+    if (resource.match(/^[^/^.][a-zA-Z0-9]*?\.[^/]*?\//) != null) {
+        host = "http://" + resource.match(/[^/]*\//)[0];
+        resource = resource.replace(/[^/]*\//, "");
+    }
+    var resource_object = new URL(resource, host);
+    var resource_url = resource_object.href.split('?')[0]
+    return resource_url;
 }
