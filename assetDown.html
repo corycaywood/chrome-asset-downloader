@@ -14,111 +14,128 @@
 		<div class="container" ng-controller="Assets as assets" id="assetDownloader">
 
 			<!-- Stylesheet - repeatable for each stylesheet -->
-			<div class="row" 
-				ng-repeat="stylesheet in stylesheets" ng-show="stylesheet.stylesheet.length > 0">
+			<div class="row">
 				<div class="col-xs-12">
 					<div class="panel panel-default">
-						
-						<!-- Heading -->
-						<div class="panel-heading">
-							<div class="button-wrap">
-								<!-- Expand Button -->
-								<span class="expand" 
-									ng-click="stylesheet.expanded = assets.toggleBoolean(stylesheet.expanded);" 
-									ng-class="stylesheet.expanded ? 'expanded' : ''">
-									<span 
-										ng-show="assets.hasAssets(stylesheet.categories.images) || assets.hasAssets(stylesheet.categories.fonts)">
-										<i class="expand-icon">+</i>
-										<i class="collapse-icon">-</i>
-									</span>
-								</span><!-- Text --><span class="text">
-									{{assets.getFileName(stylesheet.stylesheet)}}
-								</span><!-- Download Button --><button class="btn btn-primary" 
-									ng-click="assets.downloadFontsAndImages(stylesheet.categories, $index)" 
-									ng-show="assets.hasAssets(stylesheet.categories.images) || assets.hasAssets(stylesheet.categories.fonts)">
-									Download All
-								</button>
-								<div class="url"><a target="_blank" href="{{stylesheet.stylesheet}}">{{stylesheet.stylesheet}}</a></div>
-							</div>
-							<!-- Progress Bar -->
-							<div class="progress" ng-class="stylesheet.progressIsVisible ? '' : 'hidden'">
-								<div class="progress-bar" ng-class="(stylesheet.categories.images.downloaded || stylesheet.categories.fonts.downloaded) ? 'complete progress-bar-success' : 'progress-bar-striped active'" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 
-									{{((assets.convertUndefinedToNum(stylesheet.categories.images.downloadPercent) / 100 * stylesheet.categories.images.length 
-											+ assets.convertUndefinedToNum(stylesheet.categories.fonts.downloadPercent) / 100 * stylesheet.categories.fonts.length) 
-											/ (stylesheet.categories.images.length + stylesheet.categories.fonts.length) 
-										) * 100}}%">
-									<span class="sr-only">{{((assets.convertUndefinedToNum(stylesheet.categories.images.downloadPercent) / 100 * stylesheet.categories.images.length 
-											+ assets.convertUndefinedToNum(stylesheet.categories.fonts.downloadPercent) / 100 * stylesheet.categories.fonts.length) 
-											/ (stylesheet.categories.images.length + stylesheet.categories.fonts.length) 
-										) * 100}}% Complete (success)
-									</span>
-								</div>
-							</div>
-						</div>
-						
-						<!-- Categories wrapper - images and fonts -->
-						<div class="categories panel-body expandable" 
-							ng-class="stylesheet.expanded ? 'expanded' : ''">
-							
-							<!-- Repeat for images and fonts categories -->
-							<div class="category {{category_name}}" ng-repeat="(category_name, category) in stylesheet.categories" ng-show="category.length > 0">
-								<div class="sub-parent button-wrap">
-									<!-- Expand button -->
+						<div class="item" ng-repeat="stylesheet in resources.stylesheets" ng-show="stylesheet.stylesheet.length > 0">
+							<!-- Heading -->
+							<div class="panel-heading">
+								<div class="button-wrap">
+									<!-- Expand Button -->
 									<span class="expand" 
-										ng-click="category.expanded = assets.toggleBoolean(category.expanded); assets.getFontDataUris(category, stylesheets.indexOf(stylesheet), category_name)" ng-class="category.expanded ? 'expanded' : ''">
-										<!-- Icons -->
-										<span ng-show="assets.hasAssets(category)">
+										ng-click="stylesheet.expanded = assets.toggleBoolean(stylesheet.expanded);" 
+										ng-class="stylesheet.expanded ? 'expanded' : ''">
+										<span 
+											ng-show="assets.hasAssets(stylesheet.categories.images) || assets.hasAssets(stylesheet.categories.fonts)">
 											<i class="expand-icon">+</i>
 											<i class="collapse-icon">-</i>
 										</span>
 									</span><!-- Text --><span class="text">
-										{{category_name}}
-									</span>
-									<!-- Download Button -->
-									<button class="btn btn-primary" 
-										ng-click="assets.downloadAllAssets(category, category_name, stylesheets.indexOf(stylesheet))" 
-										ng-show="assets.hasAssets(category)">
+										{{assets.getFileName(stylesheet.stylesheet)}}
+									</span><!-- Download Button --><button class="btn btn-primary" 
+										ng-click="assets.downloadFontsAndImages(stylesheet.categories, $index)" 
+										ng-show="assets.hasAssets(stylesheet.categories.images) || assets.hasAssets(stylesheet.categories.fonts)">
 										Download All
 									</button>
+									<div class="url"><a target="_blank" href="{{stylesheet.stylesheet}}" title="{{stylesheet.stylesheet}}">{{stylesheet.stylesheet}}</a></div>
+								</div>
+								<!-- Progress Bar -->
+								<div class="progress" ng-class="stylesheet.progressIsVisible ? '' : 'hidden'">
+									<div class="progress-bar" ng-class="(stylesheet.categories.images.downloaded || stylesheet.categories.fonts.downloaded) ? 'complete progress-bar-success' : 'progress-bar-striped active'" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 
+										{{((assets.convertUndefinedToNum(stylesheet.categories.images.downloadPercent) / 100 * stylesheet.categories.images.length 
+												+ assets.convertUndefinedToNum(stylesheet.categories.fonts.downloadPercent) / 100 * stylesheet.categories.fonts.length) 
+												/ (stylesheet.categories.images.length + stylesheet.categories.fonts.length) 
+											) * 100}}%">
+									</div>
+								</div>
+							</div>
+							
+							<!-- Categories wrapper - images and fonts -->
+							<div class="categories panel-body expandable" 
+								ng-class="stylesheet.expanded ? 'expanded' : ''" collapse="!stylesheet.expanded">
+								
+								<!-- Repeat for images and fonts categories -->
+								<div class="category {{category_name}}" ng-repeat="(category_name, category) in stylesheet.categories" ng-show="category.length > 0">
+									<div class="sub-parent button-wrap">
+										<!-- Expand button -->
+										<span class="expand" 
+											ng-click="category.expanded = assets.toggleBoolean(category.expanded); assets.getFontDataUris(category, resources.stylesheets.indexOf(stylesheet), category_name)" ng-class="category.expanded ? 'expanded' : ''">
+											<!-- Icons -->
+											<span ng-show="assets.hasAssets(category)">
+												<i class="expand-icon">+</i>
+												<i class="collapse-icon">-</i>
+											</span>
+										</span><!-- Text --><span class="text">
+											{{category_name}}
+										</span>
+										<!-- Download Button -->
+										<button class="btn btn-primary" 
+											ng-click="assets.downloadAllAssets(category, category_name, resources.stylesheets.indexOf(stylesheet))" 
+											ng-show="assets.hasAssets(category)">
+											Download All
+										</button>
+									</div>
 									<!-- Progress Bar -->
 									<div class="progress" ng-class="category.progressIsVisible ? '' : 'hidden'">
 										<div class="progress-bar" ng-class="category.downloaded ? 'complete progress-bar-success' : 'progress-bar-striped active'" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: {{category.downloadPercent}}%">
 											<span class="sr-only">{{category.downloadPercent}}% Complete (success)</span>
 										</div>
 									</div>
-								</div>
-								<!-- Asset items -->
-								<div class="stylesheet-item-wrap expandable" 
-									ng-class="category.expanded ? 'expanded' : ''">
-									<div class="stylesheet-item button-wrap" 
-										ng-repeat="item in category">
-										<div ng-show="category_name == 'images'">
-                                            <img src="{{item.url}}">
-                                        </div>
-										<div ng-show="category_name == 'fonts'">
-                                            <style>
-                                                .class-{{assets.getFileName(item.url).split('.')[0]}} {
-                                                    font-family: font{{assets.getFileName(item.url).split('.')[0]}};
-                                                }
-                                                @font-face {
-                                                    font-family: font{{assets.getFileName(item.url).split('.')[0]}};
-                                                    src: url({{item.dataUri}})
-                                                }
-                                            </style>
-                                            <div class='font-example' ng-class="'class-' + assets.getFileName(item.url).split('.')[0]">Grumpy wizards make toxic brew for the evil Queen and Jack.</div>
-											<!-- Filename text -->
-                                        </div>
-										<div class="url">
-											<a ng-click="assets.downloadSingleAssetApp(item.url, category_name)">{{assets.getFileName(item.url)}}</a>
+									<!-- Asset items -->
+									<div class="stylesheet-item-wrap expandable" 
+										ng-class="category.expanded ? 'expanded' : ''" collapse="!category.expanded">
+										<div class="stylesheet-item button-wrap" 
+											ng-repeat="item in category">
+											<div ng-show="category_name == 'images'">
+												<img src="{{item.url}}">
+											</div>
+											<div ng-show="category_name == 'fonts'">
+												<style>
+													.class-{{assets.getFileName(item.url).split('.')[0]}} {
+														font-family: font{{assets.getFileName(item.url).split('.')[0]}};
+													}
+													@font-face {
+														font-family: font{{assets.getFileName(item.url).split('.')[0]}};
+														src: url({{item.dataUri}})
+													}
+												</style>
+												<div class='font-example' ng-class="'class-' + assets.getFileName(item.url).split('.')[0]">Grumpy wizards make toxic brew for the evil Queen and Jack.</div>
+												<!-- Filename text -->
+											</div>
+											<div class="url">
+												<a ng-click="assets.downloadSingleAssetApp(item.url, category_name); assets.preventDefaultHref($event)" title="{{item.url}}" href="{{item.url}}">{{assets.getFileName(item.url)}}</a>
+											</div>
 										</div>
 									</div>
 								</div>
+								
 							</div>
-							
 						</div>
 					</div>
 				</div>
 			</div>
+			
+			<div class="row">
+				<h2>images</h2>
+				<div class="col-xs-12" ng-repeat="image in resources.images">
+					{{image}}
+				</div>
+			</div>
+			
+			<div class="row">
+				<h2>fonts</h2>
+				<div class="col-xs-12" ng-repeat="font in resources.fonts">
+					{{font}}
+				</div>
+			</div>
+			
+			<div class="row">
+				<h2>scripts</h2>
+				<div class="col-xs-12" ng-repeat="script in resources.scripts">
+					{{script}}
+				</div>
+			</div>
+			
 			
 		</div>
 
