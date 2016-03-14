@@ -17,7 +17,7 @@
 	
 	/* Tabs */
 	.nav-pills {margin-top: 20px;}
-	.nav-pills li a {text-transform: uppercase; color: #fff; background: rgba(51,122,183,0.5); margin: 0 6px 10px 0;}
+	.nav-pills li a {text-transform: capitalize; color: #fff; background: rgba(51,122,183,0.5); margin: 0 6px 10px 0;}
 	.nav-pills li a:hover {background: rgba(51,122,183,1); border-color: transparent;}
 	
 	/* Heading */
@@ -65,4 +65,4 @@
     .stylesheet-item a {cursor: pointer;}
 	.stylesheet-item .url {padding-left: 0;}
 		/* Font example */
-		.stylesheet-item .font-example {font-size: 24px;}
+		.stylesheet-item .font-example {font-size: 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
