@@ -73,30 +73,35 @@ chrome.devtools.panels.create(
 				resources.stylesheets = [];
 				resources.scripts = [];
 				resources.images = [];
+				var imagesCheck = [];
 				resources.fonts = [];
 				getAssetUrls(res.length - 1);
 				function getAssetUrls(index) {
 					if (index > 0) {
 						res[index].getContent(function(content){
-							if (res[index].type == "stylesheet") {
-								resources.stylesheets.push(getUrlsFromStylesheet(content, res[index].url));
-							} else if (res[index].type == "image") {
-								resources.images.push(res[index].url)
-							} else if (res[index].type == "script") {
-								var scriptUrl = new URL(res[index].url);
-								if (scriptUrl.protocol == "http:" || scriptUrl.protocol == "https:") {
-									resources.scripts.push(res[index].url)
+							// Push to resources if the content was successfully retrieved
+							if (content != null) {
+								if (res[index].type == "stylesheet") {
+									resources.stylesheets.push(getUrlsFromStylesheet(content, res[index].url));
+								} else if (res[index].type == "image") {
+									resources.images.push({url: res[index].url})
+									imagesCheck.push(res[index].url);
+								} else if (res[index].type == "script") {
+									var scriptUrl = new URL(res[index].url);
+									if (scriptUrl.protocol == "http:" || scriptUrl.protocol == "https:") {
+										resources.scripts.push({url: res[index].url})
+									}
 								}
 							}
 							getAssetUrls(index - 1);
 						})
 					} else {
 						// Get images from stylesheet and merge with images from getContent()
-						mergeResources(resources, "images", function(images){
+						mergeResources(resources, imagesCheck, "images", function(images){
 						resources.images = images;
 						
 							// Add fonts from stylesheet to images array
-							mergeResources(resources, "fonts", function(fonts){
+							mergeResources(resources, [], "fonts", function(fonts){
 								resources.fonts = fonts;
 								// Send urls to dev tools panel
 								_window.setResources(resources, folder_name);
@@ -115,8 +120,8 @@ chrome.devtools.panels.create(
 			};
 			
 			// Get Data Uri
-			_window.getDataUriXhr = function(url, index, count) {
-				port.postMessage({action: "getDataUriXhr", url: url, index: index, count: count});
+			_window.getDataUriXhr = function(url, index) {
+				port.postMessage({action: "getDataUriXhr", url: url, index: index});
 			}
 			
 		});
@@ -133,7 +138,7 @@ function getUrlsFromStylesheet(stylesheet, stylesheet_url) {
 			urls = new Object();
 
 	//Build urls object
-	urls.stylesheet = stylesheet_url;
+	urls.url = stylesheet_url;
 	urls.categories = {};
 	urls.categories.fonts = getFixedUrls(stylesheet.match(FONT_REGEX), hostname);
 	urls.categories.images = getFixedUrls(stylesheet.match(IMAGE_REGEX), hostname);
@@ -197,13 +202,13 @@ function fixUrl(asset, hostname) {
 	return resource_url;
 }
 
-function mergeResources(resources, type, callback) {
+function mergeResources(resources, check, type, callback) {
 	var stylesheetsEnd = 0;
 	if (resources.stylesheets.length > 0) {
 		resources.stylesheets.forEach(function(item, index){
 			item.categories[type].forEach(function(res, resIndex){
-				if (resources[type].indexOf(res.url) == -1) {
-					resources[type].push(res.url);
+				if (check.indexOf(res.url) == -1) {
+					resources[type].push({url: res.url});
 				}
 			})
 			if (++stylesheetsEnd == resources.stylesheets.length && typeof callback == "function") {

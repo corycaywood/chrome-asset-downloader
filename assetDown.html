@@ -5,19 +5,37 @@
 	</head>
 	<body>
 
-		<div class="container">
-			<h1>Asset Downloader</h1>
-			<p>Files will be saved to your default Downloads directory in a folder named "<span id="folderName"></span>".
-			<div id="sources"></div>
-		</div>
+		<div class="container app-wrap" ng-controller="Assets as assets" id="assetDownloader">
 
-		<div class="container" ng-controller="Assets as assets" id="assetDownloader">
+			<!-- Tabs -->
+			<div class="row">
+				<div class="col-xs-12">
+					<ul class="nav nav-pills">
+						<li role="presentation" ng-class="{active: assets.isSet(resource_name)}" ng-repeat="(resource_name, resource) in resources" ng-click="assets.setTab(resource_name)">
+							<a href="#">{{resource_name}}</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="row" ng-show="folderName.length > -1">
+				<div class="col-xs-12">
+					<p>Files will be saved to your default Downloads directory in a folder named <strong>{{folderName}}</strong>.
+				</div>
+			</div>
 
 			<!-- Stylesheet - repeatable for each stylesheet -->
 			<div class="row">
 				<div class="col-xs-12">
-					<div class="panel panel-default">
-						<div class="item" ng-repeat="stylesheet in resources.stylesheets" ng-show="stylesheet.stylesheet.length > 0">
+					<div class="tab-content panel panel-default" ng-class="{active: assets.isSet('stylesheets')}"  ng-show="resources.stylesheets.length > 0">
+						<div class="panel-body download-all">
+							<!-- Download Button -->
+							<button class="btn btn-danger" 
+								ng-click="assets.downloadAllAssets(resources.stylesheets, 'stylesheets', -1)">
+								Download All Stylesheets
+							</button>
+						</div>
+						<div class="item" ng-repeat="stylesheet in resources.stylesheets" ng-show="stylesheet.url.length > 0">
 							<!-- Heading -->
 							<div class="panel-heading">
 								<div class="button-wrap">
@@ -31,13 +49,13 @@
 											<i class="collapse-icon">-</i>
 										</span>
 									</span><!-- Text --><span class="text">
-										{{assets.getFileName(stylesheet.stylesheet)}}
-									</span><!-- Download Button --><button class="btn btn-primary" 
+										{{assets.getFileName(stylesheet.url)}}
+									</span><!-- Download Button --><button class="btn btn-danger" 
 										ng-click="assets.downloadFontsAndImages(stylesheet.categories, $index)" 
 										ng-show="assets.hasAssets(stylesheet.categories.images) || assets.hasAssets(stylesheet.categories.fonts)">
-										Download All
+										Download Assets
 									</button>
-									<div class="url"><a target="_blank" href="{{stylesheet.stylesheet}}" title="{{stylesheet.stylesheet}}">{{stylesheet.stylesheet}}</a></div>
+									<div class="url"><a target="_blank" href="{{stylesheet.url}}" title="{{stylesheet.url}}">{{stylesheet.url}}</a></div>
 								</div>
 								<!-- Progress Bar -->
 								<div class="progress" ng-class="stylesheet.progressIsVisible ? '' : 'hidden'">
@@ -69,10 +87,10 @@
 											{{category_name}}
 										</span>
 										<!-- Download Button -->
-										<button class="btn btn-primary" 
+										<button class="btn btn-default" 
 											ng-click="assets.downloadAllAssets(category, category_name, resources.stylesheets.indexOf(stylesheet))" 
 											ng-show="assets.hasAssets(category)">
-											Download All
+											Download {{category_name}}
 										</button>
 									</div>
 									<!-- Progress Bar -->
@@ -84,26 +102,17 @@
 									<!-- Asset items -->
 									<div class="stylesheet-item-wrap expandable" 
 										ng-class="category.expanded ? 'expanded' : ''" collapse="!category.expanded">
-										<div class="stylesheet-item button-wrap" 
+										<div class="stylesheet-item" 
 											ng-repeat="item in category">
 											<div ng-show="category_name == 'images'">
 												<img src="{{item.url}}">
 											</div>
 											<div ng-show="category_name == 'fonts'">
-												<style>
-													.class-{{assets.getFileName(item.url).split('.')[0]}} {
-														font-family: font{{assets.getFileName(item.url).split('.')[0]}};
-													}
-													@font-face {
-														font-family: font{{assets.getFileName(item.url).split('.')[0]}};
-														src: url({{item.dataUri}})
-													}
-												</style>
 												<div class='font-example' ng-class="'class-' + assets.getFileName(item.url).split('.')[0]">Grumpy wizards make toxic brew for the evil Queen and Jack.</div>
 												<!-- Filename text -->
 											</div>
 											<div class="url">
-												<a ng-click="assets.downloadSingleAssetApp(item.url, category_name); assets.preventDefaultHref($event)" title="{{item.url}}" href="{{item.url}}">{{assets.getFileName(item.url)}}</a>
+												{{assets.getFileName(item.url)}} - <a ng-click="assets.downloadSingleAssetApp(item.url, category_name); assets.preventDefaultHref($event)" title="{{item.url}}" href="{{item.url}}">Download</a>
 											</div>
 										</div>
 									</div>
@@ -112,27 +121,51 @@
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
+
 			
-			<div class="row">
-				<h2>images</h2>
-				<div class="col-xs-12" ng-repeat="image in resources.images">
-					{{image}}
-				</div>
-			</div>
-			
-			<div class="row">
-				<h2>fonts</h2>
-				<div class="col-xs-12" ng-repeat="font in resources.fonts">
-					{{font}}
-				</div>
-			</div>
-			
-			<div class="row">
-				<h2>scripts</h2>
-				<div class="col-xs-12" ng-repeat="script in resources.scripts">
-					{{script}}
+					<!-- Scripts, Images, and Fonts Tabs -->
+					<div ng-repeat="(resource_name, resource) in resources" ng-if="resource_name!='stylesheets'" class="tab-content panel panel-default" ng-class="{active: assets.isSet(resource_name)}">
+						<div class="panel-body download-all">
+							<!-- Download Button -->
+							<button class="btn btn-danger" 
+								ng-click="assets.downloadAllAssets(resource, resource_name, -1)">
+								Download All {{resource_name}}
+							</button>
+						</div>
+						<!-- Asset items -->
+						<div class="panel-body">
+							<div class="stylesheet-item button-wrap" 
+								ng-repeat="item in resource" ng-show="item.url.length > 0">
+								<!-- Images -->
+								<div ng-if="resource_name=='images'">
+									<img src="{{item.url}}">
+								</div>
+								<!-- Scripts -->
+								<div ng-if="resource_name=='scripts'">
+									<div class="url"><a href="{{item.url}}" target="_blank">{{item.url}}</a></div>
+								</div>
+								<!-- Fonts -->
+								<div ng-if="resource_name=='fonts'">
+									<style>
+										.class-{{assets.getFileName(item.url).split('.')[0]}} {
+											font-family: font{{assets.getFileName(item.url).split('.')[0]}};
+										}
+										@font-face {
+											font-family: font{{assets.getFileName(item.url).split('.')[0]}};
+											src: url({{item.dataUri}})
+										}
+									</style>
+									<div class='font-example' ng-class="'class-' + assets.getFileName(item.url).split('.')[0]">Grumpy wizards make toxic brew for the evil Queen and Jack.</div>
+								</div>
+								<div class="url">
+									{{assets.getFileName(item.url)}} - <a ng-click="assets.downloadSingleAssetApp(item, resource_name); assets.preventDefaultHref($event)" title="{{item.url}}" href="{{item.url}}">
+										Download</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
 				</div>
 			</div>
 			

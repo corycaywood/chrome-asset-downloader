@@ -13,7 +13,9 @@ app.controller('Assets', function($scope){
 	}
 	
     this.downloadAllAssets = function(assets, folder, index) {
-        $scope.resources.stylesheets[index].categories[folder].progressIsVisible = true;
+		if (index > -1) {
+			$scope.resources.stylesheets[index].categories[folder].progressIsVisible = true;
+		}
 		downloadAllAssetsApp(assets, folder, index);
     }
 	
@@ -53,20 +55,20 @@ app.controller('Assets', function($scope){
 		return url;
 	}
     
-    /* Set Font Data Uris to scope */
-    this.getFontDataUris = function(items, index, category_name){
-        if (category_name == "fonts" && typeof $scope.resources.stylesheets[index].categories.fonts[0].dataUri == "undefined") {
-            for (var i = 0; i < items.length; i++) {
-                getDataUriXhr(items[i].url, index, i);
-            }
-        }
-    }
-    
     /* Href Prevent Default */
     this.preventDefaultHref = function(e) {
         e.preventDefault();
     }
-    
+	
+	
+	/* Tabs */
+	this.tab = "stylesheets";
+	this.setTab = function(newValue){
+		this.tab = newValue;
+	};
+	this.isSet = function(tabName){
+		return this.tab === tabName;
+	};
     
 });
 
@@ -159,30 +161,45 @@ app.directive('collapse', [function () {
 	
 	/* Set the resources from stylesheet to the scope's stylesheet object */
 	function setResources(res, folder){
-        // Set folder name
-		document.querySelector("#folderName").innerHTML = folder + "_Assets";
-        
 		var scope = angular.element(document.getElementById('assetDownloader')).scope();
-		scope.$apply(function(){scope.resources = res});
-        console.log('resources set')
+		scope.$apply(function(){
+			scope.resources = res
+			scope.folderName = folder + "_Assets";
+		});
+		
+		// Get Font Data Uris
+		getFontDataUris(scope.resources.fonts);
 	}
+	
+    /* Set Font Data Uris to scope */
+    this.getFontDataUris = function(items){
+		for (var i = 0; i < items.length; i++) {
+			if (typeof items[i].dataUri == "undefined") {
+				getDataUriXhr(items[i].url, i);
+			}
+		}
+    }
 
 	/* Set progress bar percentage */
 	var setPercentage = function(type, index, percent){
-		var scope = angular.element(document.getElementById('assetDownloader')).scope();
-		scope.$apply(function(){scope.resources.stylesheets[index].categories[type].downloadPercent = percent});
+		if (index > -1) {
+			var scope = angular.element(document.getElementById('assetDownloader')).scope();
+			scope.$apply(function(){scope.resources.stylesheets[index].categories[type].downloadPercent = percent});
+		}
 	}
 	
 	/* Set download complete */
 	var setDownloadDone = function(type, index){
-		window.setTimeout(function(){
-			var scope = angular.element(document.getElementById('assetDownloader')).scope();
-			scope.$apply(function(){scope.resources.stylesheets[index].categories[type].downloaded = true});
-		}, 500)
+		if (index > -1) {
+			window.setTimeout(function(){
+				var scope = angular.element(document.getElementById('assetDownloader')).scope();
+				scope.$apply(function(){scope.resources.stylesheets[index].categories[type].downloaded = true});
+			}, 500)
+		}
 	}
 
     /* Set Data Uri's for fonts */
     var setFontDataUri = function(e) {
         var scope = angular.element(document.getElementById('assetDownloader')).scope();
-        scope.$apply(function(){scope.resources.stylesheets[e.index].categories.fonts[e.count].dataUri = e.data;});
+        scope.$apply(function(){scope.resources.fonts[e.index].dataUri = e.data;});
     }

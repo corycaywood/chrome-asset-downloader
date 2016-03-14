@@ -19,7 +19,7 @@ chrome.runtime.onConnect.addListener(function(port) {
             })
 		} else if (msg.action == "getDataUriXhr") {
             getDataUriXhr(msg.url, function(dataUri){
-                notifyDevtools({action: "returnDataUri", data: dataUri, index: msg.index, count: msg.count});
+                notifyDevtools({action: "returnDataUri", data: dataUri, index: msg.index});
             });
 
         }
