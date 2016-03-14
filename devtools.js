@@ -87,9 +87,11 @@ chrome.devtools.panels.create(
 									resources.images.push({url: res[index].url})
 									imagesCheck.push(res[index].url);
 								} else if (res[index].type == "script") {
-									var scriptUrl = new URL(res[index].url);
-									if (scriptUrl.protocol == "http:" || scriptUrl.protocol == "https:") {
-										resources.scripts.push({url: res[index].url})
+									if (res[index].url.match(/\/\//) !== null) {
+										var scriptUrl = new URL(res[index].url);
+										if (scriptUrl.protocol == "http:" || scriptUrl.protocol == "https:") {
+											resources.scripts.push({url: res[index].url})
+										}
 									}
 								}
 							}
