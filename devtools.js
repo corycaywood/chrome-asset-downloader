@@ -1,7 +1,8 @@
 /* TODO:
-	- Add separate tabs to view all fonts or all images (including images from the HTML)
 	- field for folder name
 	- context menu - copy link location
+	- progress bar for "Download All ..." buttons
+	- optimize performance - insert stylesheet nodes into document as they are loaded
 */
 
 
@@ -62,7 +63,7 @@ chrome.devtools.panels.create(
 			
 			//Get inspected window title for folder name
 			chrome.devtools.inspectedWindow.eval("document.title", function(result) {
-				folder_name = result.replace(/\s/g, "_").replace(/\|/g, "").replace(/\:/g, "");
+				folder_name = result.replace(/\s/g, "_").replace(/[^a-zA-Z0-9\-_]/g, "");
 			});
 			
 			//Get Stylesheet links
