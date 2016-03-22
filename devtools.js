@@ -3,6 +3,7 @@
 	- context menu - copy link location
 	- progress bar for "Download All ..." buttons
 	- optimize performance - insert stylesheet nodes into document as they are loaded
+	- add font family, weight, and style information
 */
 
 

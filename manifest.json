@@ -1,7 +1,7 @@
 {
   "name": "Asset Downloader",
   "version": "0.1",
-  "description": "Extends the Developer Tools, adding a sidebar that allows image and font files to be batch downloaded.",
+  "description": "Extends the Developer Tools, adding a sidebar that allows images, fonts, stylesheets, and scripts to be batch downloaded.",
   "devtools_page": "devtools.html",
   "background" : {
     "scripts": ["background.js"]

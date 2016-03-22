@@ -22,7 +22,7 @@
 	
 	/* Heading */
 	.text {display: inline-block; word-break: break-word; padding-left: 25px;}
-	.panel-heading {position: relative; min-height: 48px; border: none; background: #f6f6f6; border-top: 1px solid #ddd; border-radius: 0; padding-top: 6px; padding-bottom: 6px;}
+	.panel-heading {position: relative; min-height: 48px; border: none; background: #fff; border-top: 1px solid #d2dbed; border-radius: 0; padding-top: 6px; padding-bottom: 6px;}
     .item:first-child .panel-heading {border-top: none;}
 
 	/* Expand Button */
@@ -44,12 +44,12 @@
 	.progress-bar.complete {width: 100% !important;}
 		
 	/* Categories */
-	.categories {padding-top: 0; padding-bottom: 0;}
+	.categories {padding-top: 0; padding-bottom: 0; background: #f3f7fc;}
     .category {position: relative;}
 	.sub-parent {padding: 6px 0; min-height: 48px; display: flex; align-items: center;}
 	.sub-parent .text {text-transform: capitalize;}
 	.sub-parent button {}
-	.category:before {content: ""; border-bottom: 1px solid #ddd; display: block; margin-left: -15px; margin-right: -15px;}
+	.category:before {content: ""; border-bottom: 1px solid #d2dbed; display: block; margin-left: -15px; margin-right: -15px;}
 	.category:last-child:after {display: none;}
 		/* Category Expand Button */
 		.categories .expand {top: 13px;}
@@ -58,7 +58,7 @@
 		
 	/* Stylesheet Items */
 	.stylesheet-item-wrap {padding-left: 25px;}
-	.stylesheet-item {position: relative; padding: 15px 0; border-top: 1px solid #eee; min-height: 72px;}
+	.stylesheet-item {position: relative; padding: 15px 0; border-top: 1px solid #d2dbed; min-height: 72px;}
 	.stylesheet-item .text {padding: 0 105px 0 0; font-weight: bold;}
     .stylesheet-item button {top: 20px;}
 	.stylesheet-item img {max-width: 100%; margin: 10px 0;}
