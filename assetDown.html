@@ -158,7 +158,7 @@
 									<div class='font-example' ng-class="'class-' + assets.getFileName(item.url).split('.')[0]">Grumpy wizards make toxic brew for the evil Queen and Jack.</div>
 								</div>
 								<div class="url">
-									{{assets.getFileName(item.url)}} - <a ng-click="assets.downloadSingleAssetApp(item, resource_name); assets.preventDefaultHref($event)" title="{{item.url}}" href="{{item.url}}">
+									{{assets.getFileName(item.url)}} - <a ng-click="assets.downloadSingleAssetApp(item.url, resource_name); assets.preventDefaultHref($event)" title="{{item.url}}" href="{{item.url}}">
 										Download</a>
 								</div>
 							</div>
