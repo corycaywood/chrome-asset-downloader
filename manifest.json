@@ -4,11 +4,14 @@
   "description": "Extends the Developer Tools, adding a sidebar that allows images, fonts, stylesheets, and scripts to be batch downloaded.",
   "devtools_page": "devtools.html",
   "background" : {
-    "scripts": ["background.js"]
+    "service_worker": "background.js",
+    "type": "module"
   },
-  "manifest_version": 2,
+  "manifest_version": 3,
 	"permissions": [
-		"<all_urls>",
 		"downloads"
-	]
+	],
+  "host_permissions": [
+    "<all_urls>"
+  ]
 }

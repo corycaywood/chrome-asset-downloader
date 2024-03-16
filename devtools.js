@@ -137,8 +137,8 @@ chrome.devtools.panels.create(
 /* Functions
 ******************************/
 function getUrlsFromStylesheet(stylesheet, stylesheet_url) {
-	var stylesheet_url_object = new URL(stylesheet_url, window_url),
-			hostname = stylesheet_url_object.protocol + "//" + stylesheet_url_object.hostname + "/" + stylesheet_url_object.pathname,
+	var stylesheet_url_object = new URL(stylesheet_url, window_url)
+			hostname = stylesheet_url_object.protocol + "//" + stylesheet_url_object.hostname + stylesheet_url_object.pathname;
 			urls = new Object();
 
 	//Build urls object
@@ -193,12 +193,16 @@ function getFixedUrls(assets, hostname) {
 
 function fixUrl(asset, hostname) {
 	//Modify the URL from stylesheet
-	var resource = asset.replace(/url\((.*?)\)/g, '$1').replace(/'/g, "").replace(/"/g, "").replace(/\s/g, "").replace(/^(\/\/)/g, ""),
-		host = hostname;
+	var resource = asset.replace(/url\((.*?)\)/g, '$1')
+		.replace(/'/g, "")
+		.replace(/"/g, "")
+		.replace(/\s/g, "")
+		.replace(/^(\/\/)/g, "");
+	var host = hostname;
 		
 	// Change hostname if needed
 	if (resource.match(/^[^/^.][a-zA-Z0-9]*?\.[^/]*?\//) != null) {
-		host = "http://" + resource.match(/[^/]*\//)[0];
+		host = "https://" + resource.match(/[^/]*\//)[0];
 		resource = resource.replace(/[^/]*\//, "");
 	}
 	var resource_object = new URL(resource, host);

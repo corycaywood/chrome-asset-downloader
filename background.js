@@ -69,15 +69,14 @@ function getDataUriXhr(url, callback) {
             }
         }
     }
-    var req = new XMLHttpRequest();
-    if (req != null) {
-        req.open("GET", url, true);
-        req.responseType = 'arraybuffer';
-        req.onload = handler;
-        req.send();
-    } else {
-        window.console.log("AJAX (XMLHTTP) not supported.");
-    }
+    fetch(url).then(response => {
+        if (!response.ok) {
+            throw Error(`Failed to fetch file: ${url}`)
+        }
+
+        return response.arrayBuffer()
+    }).then(buffer => callback(buffer))
+    .catch(error => console.error(error))
 }
 
 //Convert to Base64
