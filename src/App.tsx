@@ -1,24 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import './css/style.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import TabName from './resource-tab-buttons/TabName';
+import ResourceTabButtons from './resource-tab-buttons/ResourceTabButtons';
+
+const tabNames: TabName[] = ["Stylesheets", "Scripts", "Images", "Fonts"];
 
 function App() {
+  const [active, setActive] = useState<TabName>(tabNames[0])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container app-wrap">
+      <ResourceTabButtons names={tabNames} activeName={active} onClick={(name) => setActive(name)}/>
     </div>
   );
 }
