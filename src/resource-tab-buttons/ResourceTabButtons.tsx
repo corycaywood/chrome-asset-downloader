@@ -12,7 +12,7 @@ function ResourceTabButtons(props: Props) {
     return (
     <div className="row">
         <div className="col-xs-12">
-            <ul className="nav nav-pills nav-fill">
+            <ul className="nav nav-pills">
                 {props.names.map(name => <TabButton name={name} active={props.activeName === name} onClick={() => props.onClick(name)} />)}
             </ul>
         </div>
