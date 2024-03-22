@@ -1,5 +1,5 @@
 import React from 'react';
-import TabName from './TabName';
+import TabName from '../resource/ResourceName';
 
 interface Props {
     name: TabName, 
@@ -13,9 +13,6 @@ function TabButton(props: Props) {
             <a href="#">{props.name}</a>
         </li>
     );
-  }
+}
   
-  export default TabButton;
-  
-
-
+export default TabButton;
