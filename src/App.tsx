@@ -7,21 +7,22 @@ import ResourceTabButtons from './resource-tab-buttons/ResourceTabButtons';
 import ResourceTab from './resource-tab/ResourceTab';
 import { Resources } from './resource/Resource'
 import renderResources from './resource/render-resources'
+import download from './actions/download'
 
 const tabNames = [TabName.stylesheets, TabName.scripts, TabName.images, TabName.fonts];
 const resources: Resources = {
     stylesheets: [
-        {url: "https://www.example.com/stylesheet.css"}
+        {url: "https://getbootstrap.com/docs/5.3/dist/css/bootstrap.min.css"}
     ],
     images: [
-        {url: "https://www.example.com/image.jpeg"}
+        {url: "https://i.stack.imgur.com/FdTlD.jpg?s=64&g=1"}
     ],
     scripts: [
-        {url: "https://www.example.com/script.js"}
+        {url: "https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"}
     ],
     fonts: [
         {
-            url: "https://www.example.com/font.woff",
+            url: "https://fonts.gstatic.com/s/ibmplexmono/v19/-F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgg.woff2",
             dataUri: ""
         }
     ]
@@ -36,7 +37,7 @@ function App() {
 
             <div className="row">
                 <div className="col-xs-12">
-                    <ResourceTab name={active} onDownloadClick={() => undefined} items={renderResources(active, resources, () => undefined)} />
+                    <ResourceTab name={active} onDownloadClick={() => undefined} items={renderResources(active, resources, download)} />
                 </div>
             </div>
         </div>

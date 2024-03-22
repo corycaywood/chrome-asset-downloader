@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Resources, FontResource } from './Resource'
+import { Resources } from './Resource'
 import ResourceName from './ResourceName'
 
 const renderStylesheet = (url: string) => (
@@ -26,11 +26,14 @@ const renderFont = (url: string, dataUri: string) => (
     </div>
 )
 
-const renderDownloadLink = (url: string, onClickDownload: () => void) => (
-    <div className="url">
-        {fileNameFrom(url)} - <a onClick={onClickDownload} title={url} href={url}>Download</a>
-    </div>
-)
+const renderDownloadLink = (url: string, onDownloadClick: (url: string, fileName: string) => void) => {
+    const fileName = fileNameFrom(url)
+    return (
+        <div className="url">
+            {fileName} - <a title={url} href={url} onClick={(e) => {e.preventDefault(); onDownloadClick(url, fileName)}}>Download</a>
+        </div>
+    );
+}
 
 function fileNameFrom(url: string) {
     url = url.substring(0, (url.indexOf("#") == -1) ? url.length : url.indexOf("#"));
@@ -39,16 +42,16 @@ function fileNameFrom(url: string) {
     return url;
 }
 
-function renderResources(name: ResourceName, resources: Resources, onClickDownload: () => void): ReactNode[] {
+function renderResources(name: ResourceName, resources: Resources, onDownloadClick: (url: string, fileName: string) => void): ReactNode[] {
     switch(name) {
         case ResourceName.stylesheets:
-            return resources.stylesheets.map(stylesheet => [renderScript(stylesheet.url), renderDownloadLink(stylesheet.url, onClickDownload)]);
+            return resources.stylesheets.map(stylesheet => [renderScript(stylesheet.url), renderDownloadLink(stylesheet.url, onDownloadClick)]);
         case ResourceName.images:
-            return resources.images.map(image => [renderImage(image.url), renderDownloadLink(image.url, onClickDownload)]);
+            return resources.images.map(image => [renderImage(image.url), renderDownloadLink(image.url, onDownloadClick)]);
         case ResourceName.scripts:
-            return resources.scripts.map(script => [renderScript(script.url), renderDownloadLink(script.url, onClickDownload)]);
+            return resources.scripts.map(script => [renderScript(script.url), renderDownloadLink(script.url, onDownloadClick)]);
         case ResourceName.fonts:
-            return resources.fonts.map(font => [renderFont(font.url, font.dataUri), renderDownloadLink(font.url, onClickDownload)]);
+            return resources.fonts.map(font => [renderFont(font.url, font.dataUri), renderDownloadLink(font.url, onDownloadClick)]);
         default:
             return [<div></div>]
     }
