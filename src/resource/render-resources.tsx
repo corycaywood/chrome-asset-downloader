@@ -24,7 +24,7 @@ const renderFont = (url: string, dataUri: string) => {
                     src: url(${dataUri})
                 }`}
             </style>
-            <div style={style}>Grumpy wizards make toxic brew for the evil Queen and Jack.</div>
+            <div className="font-example" style={style}>Grumpy wizards make toxic brew for the evil Queen and Jack.</div>
         </div>
     )
 }

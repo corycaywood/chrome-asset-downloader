@@ -23,7 +23,7 @@ function ResourceTab(props: Props) {
 function renderItem(item: ReactNode) {
     return (
         <div className="item">
-            <div className="panel-heading">
+            <div className="panel-heading stylesheet-item">
                 <div className="button-wrap">
                     {item}
                 </div>
