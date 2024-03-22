@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
-import { Resources } from './Resource'
-import ResourceName from './ResourceName'
+import React, { ReactNode, CSSProperties } from 'react';
+import { Resources } from './Resource';
+import ResourceName from './ResourceName';
 
 const renderStylesheet = (url: string) => (
     <div className="url"><a href={url} target="_blank">{url}</a></div>
@@ -11,20 +11,23 @@ const renderImage = (url: string) => (
 const renderScript = (url: string) => (
     <div className="url"><a href={url} target="_blank">{url}</a></div>
 )
-const renderFont = (url: string, dataUri: string) => (
-    <div>
-        {/* <style>
-            {".class-{{assets.getFileName(item.url).split('.')[0]}} {" +
-                "font-family: font{{assets.getFileName(item.url).split('.')[0]}};" +
-            "}"
-            @font-face {
-                font-family: font{{assets.getFileName(item.url).split('.')[0]}};
-                src: url({{item.dataUri}})
-            }"}
-        </style>
-        <div className='font-example' ng-className="'class-' + assets.getFileName(item.url).split('.')[0]">Grumpy wizards make toxic brew for the evil Queen and Jack.</div> */}
-    </div>
-)
+const renderFont = (url: string, dataUri: string) => {
+    const fontName = `font-${fileNameFrom(url).split('.')[0]}`
+    const style: CSSProperties = {
+        fontFamily: fontName
+    }
+    return (
+        <div>
+            <style>
+                {`@font-face {
+                    font-family: ${fontName};
+                    src: url(${dataUri})
+                }`}
+            </style>
+            <div style={style}>Grumpy wizards make toxic brew for the evil Queen and Jack.</div>
+        </div>
+    )
+}
 
 const renderDownloadLink = (url: string, onDownloadClick: (url: string, fileName: string) => void) => {
     const fileName = fileNameFrom(url)
