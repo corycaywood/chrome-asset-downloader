@@ -9,7 +9,15 @@ interface Resources {
     fonts: Resource[]
 }
 
+const emptyResources = {
+    stylesheets: [],
+    scripts: [],
+    images: [],
+    fonts: []
+}
+
 export {
     Resource,
-    Resources
+    Resources,
+    emptyResources
 }

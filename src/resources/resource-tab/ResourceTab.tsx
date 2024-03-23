@@ -15,14 +15,14 @@ function ResourceTab(props: Props) {
                 <button className="btn btn-danger">Download All {props.name}</button>
             </div>
 
-            {props.items.map(item => renderItem(item))}
+            {props.items.map(item => renderItem(`${props.name}-item-${props.items.indexOf(item)}`, item))}
         </div>
     );
 }
 
-function renderItem(item: ReactNode) {
+function renderItem(key: string, item: ReactNode) {
     return (
-        <div className="item">
+        <div key={key} className="item">
             <div className="panel-heading stylesheet-item">
                 <div className="button-wrap">
                     {item}

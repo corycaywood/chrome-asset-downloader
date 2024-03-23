@@ -58,7 +58,7 @@
 		
 	/* Stylesheet Items */
 	.stylesheet-item-wrap {padding-left: 25px;}
-	.stylesheet-item {position: relative; padding: 15px 0; border-top: 1px solid #d2dbed; min-height: 72px;}
+	.stylesheet-item {position: relative; padding: 15px 0; border-top: 1px solid #d2dbed;}
 	.stylesheet-item .text {padding: 0 105px 0 0; font-weight: bold;}
     .stylesheet-item button {top: 20px;}
 	.stylesheet-item img {max-width: 100%; margin: 10px 0;}

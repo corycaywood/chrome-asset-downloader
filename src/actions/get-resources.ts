@@ -8,7 +8,7 @@ export default function getResources() {
     return new Promise(resolve => {
         chrome.devtools.inspectedWindow.getResources(resources => {
             const chromeResources = resources as ChromeResource[]
-            groupBy(chromeResources, ({type}) => type)
+            resolve(groupBy(chromeResources, ({type}) => `${type}s`))
         })
     });
 }
