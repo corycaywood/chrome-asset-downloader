@@ -10,7 +10,7 @@ interface Props {
 function TabButton(props: Props) {
     return (
         <li role="presentation" className={props.active ? "active" : ""} onClick={() => props.onClick()}>
-            <a href="#">{props.name}</a>
+            <a>{props.name}</a>
         </li>
     );
 }
