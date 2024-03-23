@@ -1,5 +1,3 @@
-import TabName from './ResourceName';
-
 interface Resource {
     url: string;
 }

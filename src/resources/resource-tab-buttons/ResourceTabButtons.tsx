@@ -1,11 +1,11 @@
 import React from 'react';
 import TabButton from './TabButton'
-import TabName from '../resource/ResourceName';
+import ResourceName from '../resource/ResourceName';
 
 interface Props {
-    names: TabName[],
-    active: TabName,
-    onClick: (name: TabName) => void
+    names: ResourceName[],
+    active: ResourceName,
+    onClick: (name: ResourceName) => void
 }
 
 function ResourceTabButtons(props: Props) {

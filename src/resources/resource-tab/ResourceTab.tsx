@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
 
-import TabName from '../resource/ResourceName'
+import ResourceName from '../resource/ResourceName'
 
 interface Props extends React.PropsWithChildren {
-    name: TabName,
+    name: ResourceName,
     items: ReactNode[]
     onDownloadClick: () => void
 }

@@ -1,8 +1,8 @@
 import React from 'react';
-import TabName from '../resource/ResourceName';
+import ResourceName from '../resource/ResourceName';
 
 interface Props {
-    name: TabName, 
+    name: ResourceName, 
     active: boolean, 
     onClick: () => void
 }

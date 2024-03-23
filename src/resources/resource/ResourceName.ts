@@ -1,8 +1,8 @@
-enum TabName {
+enum ResourceName {
     stylesheets = "Stylesheets",
     scripts = "Scripts",
     images = "Images",
     fonts = "Fonts"
 }
 
-export default TabName;
+export default ResourceName;
