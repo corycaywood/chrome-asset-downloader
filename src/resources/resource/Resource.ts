@@ -2,19 +2,14 @@ interface Resource {
     url: string;
 }
 
-interface FontResource extends Resource {
-    dataUri: string;
-}
-
 interface Resources {
     stylesheets: Resource[],
     scripts: Resource[],
     images: Resource[],
-    fonts: FontResource[]
+    fonts: Resource[]
 }
 
 export {
     Resource,
-    Resources,
-    FontResource
+    Resources
 }
