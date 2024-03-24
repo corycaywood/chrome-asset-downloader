@@ -1,4 +1,6 @@
-const fileNameFromDataUri = (uri: string) => uri.split(',')[1].substring(0, 9) + '.' +
+import hash from './hash';
+
+const fileNameFromDataUri = (uri: string) => hash(uri).toString().replace(/^-/, '') + '.' +
     uri.split(',')[0]
         .split(':')[1]
         .split('/')[1]
