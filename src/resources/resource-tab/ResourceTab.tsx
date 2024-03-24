@@ -4,15 +4,15 @@ import ResourceName from '../resource/ResourceName'
 
 interface Props extends React.PropsWithChildren {
     name: ResourceName,
-    items: ReactNode[]
-    onDownloadClick: () => void
+    items: ReactNode[],
+    onDownloadAll: () => void
 }
 
 function ResourceTab(props: Props) {
     return (
         <div className="tab-content panel panel-default">
             <div className="panel-body download-all">
-                <button className="btn btn-danger">Download All {props.name}</button>
+                <button onClick={() => props.onDownloadAll()} className="btn btn-danger">Download All {props.name}</button>
             </div>
 
             {props.items.map(item => renderItem(`${props.name}-item-${props.items.indexOf(item)}`, item))}

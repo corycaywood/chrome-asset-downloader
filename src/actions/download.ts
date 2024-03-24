@@ -1,13 +1,10 @@
-export default function download(url: string, fileName: string) {
-    fetch(url)
+import triggerDownload from './trigger-download';
+
+export default async function download(url: string, fileName: string) {
+    return fetch(url)
         .then(res => res.blob())
         .then(blob => {
             const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', fileName)
-            document.body.append(link);
-            link.click();
-            document.body.removeChild(link);
+            triggerDownload(url, fileName)
         })
 }

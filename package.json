@@ -8,6 +8,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@zip.js/zip.js": "^2.7.40",
     "bootstrap": "3.3.6",
     "http-server": "^14.1.1",
     "react": "^18.2.0",

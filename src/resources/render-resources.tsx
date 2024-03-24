@@ -1,6 +1,7 @@
 import React, { ReactNode, CSSProperties } from 'react';
 import { Resources } from './resource/Resource';
 import ResourceName from './resource/ResourceName';
+import { fileNameFrom } from '../utils/urls';
 
 const renderStylesheet = (url: string, onDownloadClick: (url: string, fileName: string) => void) => (
     <div>
@@ -50,11 +51,6 @@ const renderDownloadLink = (url: string, onDownloadClick: (url: string, fileName
         </div>
     );
 }
-
-const fileNameFrom = (url: string) => url.startsWith('data:') ? url.split(',')[0] :
-    url.substring(0, (url.indexOf("#") == -1) ? url.length : url.indexOf("#"))
-    .substring(0, (url.indexOf("?") == -1) ? url.length : url.indexOf("?"))
-    .substring(url.lastIndexOf("/") + 1, url.length)
 
 function renderResources(name: ResourceName, resources: Resources, onDownloadClick: (url: string, fileName: string) => void): ReactNode[] {
     switch(name) {

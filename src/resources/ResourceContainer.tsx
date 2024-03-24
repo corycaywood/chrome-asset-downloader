@@ -8,7 +8,8 @@ interface Props {
     active: ResourceName,
     tabNames: ResourceName[],
     resources: ReactNode[],
-    onChangeTab: (name: ResourceName) => void
+    onChangeTab: (name: ResourceName) => void,
+    onDownloadAll: () => void
 }
 
 function ResourceContainer(props: Props) {
@@ -18,7 +19,7 @@ function ResourceContainer(props: Props) {
 
             <div className="row">
                 <div className="col-xs-12">
-                    <ResourceTab name={props.active} onDownloadClick={() => undefined} items={props.resources} />
+                    <ResourceTab name={props.active} items={props.resources} onDownloadAll={props.onDownloadAll} />
                 </div>
             </div>
         </div>

@@ -8,6 +8,7 @@ import { Resources, emptyResources } from './resources/resource/Resource';
 import renderResources from './resources/render-resources';
 import download from './actions/download';
 import getResources from './actions/get-resources';
+import downloadAll from './actions/download-all';
 
 const tabNames = [ResourceName.stylesheets, ResourceName.scripts, ResourceName.images, ResourceName.fonts];
 
@@ -22,7 +23,13 @@ function App() {
     })
 
     return (
-        <ResourceContainer active={active} tabNames={tabNames} resources={renderResources(active, resources, download)} onChangeTab={(name: ResourceName) => setActive(name)} />
+        <ResourceContainer 
+            active={active} 
+            tabNames={tabNames} 
+            resources={renderResources(active, resources, download)} 
+            onChangeTab={(name: ResourceName) => setActive(name)} 
+            onDownloadAll={() => downloadAll(active, resources, "file.zip")}
+            />
     );
 }
 
