@@ -16,5 +16,13 @@ const fileNameFrom = (url: string) => url.startsWith('data:')
     ? fileNameFromDataUri(url) 
     : fileNameFromUrl(url);
 
+const extensionFrom = (url: string) => {
+    const splitFileName = fileNameFrom(url).split('.');
 
-export { fileNameFrom };
+    if (splitFileName.length <= 1)
+        return undefined
+    
+    return splitFileName.pop()
+}
+
+export { fileNameFrom, extensionFrom };
