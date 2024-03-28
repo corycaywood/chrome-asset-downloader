@@ -5,10 +5,11 @@ interface ChromeResource extends chrome.devtools.inspectedWindow.Resource {
     type: "stylesheet" | "script" | "sm-script" | "image" | "font" | "document"
 }
 
-const pickUrls = (resource?: ChromeResource[]) => resource?.map(resource => ({url: resource.url})) || []
+const pickUrls = (resource?: ChromeResource[]) => resource?.map(resource => ({url: resource.url}))
+    .filter(resource => !resource.url.startsWith('chrome-extension:')) 
+    || [];
 
 const parseResources = (resources: ChromeResource[]) => {
-    console.log("got resources")
     const groupedResources = groupBy(resources, ({type}) => type);
 
     return {
