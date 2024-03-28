@@ -16,10 +16,8 @@ const pickResources = (name: ResourceName, resources: Resources) => {
     }
 }
 
-export default async function downloadAll(name: ResourceName, resources: Resources, fileName: string) {
-    const zip = await createZip(
-        pickResources(name, resources)
-            .map(resource => resource.url)
-    )
+export default async function downloadAll(name: ResourceName, resources: Resources, fileName: string, onProgress: (progress: number) => void) {
+    const urls = pickResources(name, resources).map(resource => resource.url)
+    const zip = await createZip(urls,onProgress)
     await triggerDownload(URL.createObjectURL(zip), fileName)
 }
