@@ -9,26 +9,30 @@ import { Resources, emptyResources } from './resources/resource/Resource';
 import renderResources from './resources/render-resources';
 import download from './actions/download';
 import subscribeResources from './actions/subscribe-resources';
+import subscribeTitle from './actions/subscribe-title';
 import downloadAll from './actions/download-all';
+import zipFileName from './utils/zip-file-name';
 
 const tabNames = [ResourceName.stylesheets, ResourceName.scripts, ResourceName.images, ResourceName.fonts];
 
 function App() {
     const [active, setActive] = useState<ResourceName>(tabNames[0]);
     const [resources, setResources] = useState<Resources>(emptyResources);
+    const [title, setTitle] = useState<string | undefined>()
     const [isDownloading, setIsDownloading] = useState(false);
     const [downloadProgress, setDownloadProgress] = useState(0);
 
     useEffect(() => {
-        subscribeResources(resources => setResources(resources))
-    }, [])
+        subscribeResources(resources => setResources(resources));
+        subscribeTitle(title => setTitle(title));
+    }, []);
 
     const onDownloadProgress = (progress: number) => setDownloadProgress(progress);
 
     const onDownload = async () => {
         setIsDownloading(true);
         setDownloadProgress(0);
-        await downloadAll(active, resources, "file.zip", onDownloadProgress);
+        await downloadAll(active, resources, zipFileName(active, title), onDownloadProgress);
         setIsDownloading(false);
     }
 
