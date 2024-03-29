@@ -5,6 +5,8 @@ interface Props extends React.PropsWithChildren {
     progress: number
 }
 
+const ANIMATION_DURATION_MS = 150
+
 function DownloadDialog(props: Props) {
     const [display, setDisplay] = useState<'none' | 'block'>('none');
 
@@ -12,16 +14,19 @@ function DownloadDialog(props: Props) {
         if (props.visible) {
             setDisplay('block');
         } else {
-            setTimeout(() => setDisplay('none'), 150);
+            setTimeout(() => setDisplay('none'), ANIMATION_DURATION_MS);
         }
     }, [props.visible])
 
     return (
-        <div style={{display}}>
-            <div
-                className={`${props.visible ? 'in ' : ''}` + 'modal fade'} 
-                style={{display: 'block'}}
-            >
+        <div 
+            className={`fade ${props.visible ? 'in' : 'out'}`}
+            style={{
+                display,
+                transition: `opacity ${ANIMATION_DURATION_MS}ms linear`
+            }}
+        >
+            <div className={'modal fade in'}>
                 <div className="modal-dialog" role="document"> 
                     <div className="modal-content"> 
                         <div className="modal-header">
@@ -38,7 +43,7 @@ function DownloadDialog(props: Props) {
                 </div> 
             </div>
 
-            <div  className={`${props.visible ? 'in ' : ''}` + 'modal-backdrop fade'}></div>
+            <div  className={'modal-backdrop fade in'}></div>
         </div>
 
     );

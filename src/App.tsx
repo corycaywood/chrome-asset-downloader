@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import './css/style.css';
 import "bootstrap/dist/css/bootstrap.min.css";
+import './css/style.css';
 
 import ResourceName from './resources/resource/ResourceName';
 import ResourceContainer from './resources/ResourceContainer';

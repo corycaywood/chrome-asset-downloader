@@ -36,7 +36,7 @@
 		.expandable.expanded {}
 		
 	/* URLs */
-	.url {padding-left: 25px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.75em;}
+	.url {white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.75em;}
 		
 	/* Categories */
 	.categories {padding-top: 0; padding-bottom: 0; background: #f3f7fc;}
@@ -53,11 +53,13 @@
 		
 	/* Stylesheet Items */
 	.stylesheet-item-wrap {padding-left: 25px;}
-	.stylesheet-item {position: relative; padding: 15px 0; border-top: 1px solid #d2dbed;}
+	.stylesheet-item {position: relative; padding: 15px 25px; border-top: 1px solid #d2dbed;}
 	.stylesheet-item .text {padding: 0 105px 0 0; font-weight: bold;}
     .stylesheet-item button {top: 20px;}
 	.stylesheet-item img {max-width: 100%; margin: 10px 0;}
     .stylesheet-item a {cursor: pointer;}
-	.stylesheet-item .url {padding-left: 0;}
 		/* Font example */
 		.stylesheet-item .font-example {font-size: 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+
+	/* Download Progress modal */
+	.modal { display: flex; align-items: center; justify-content: center; }
