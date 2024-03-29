@@ -12,6 +12,18 @@ interface Props {
     onDownloadAll: () => void
 }
 
+const renderTab = (props: Props) => {
+    if (props.resources.length > 0) {
+        return <ResourceTab name={props.active} items={props.resources} onDownloadAll={props.onDownloadAll} />;
+    } else {
+        return (
+            <div className='tab-content panel panel-default'>
+                <div className='panel-body'>There are no <b>{props.active.toLowerCase()}</b> available on this page.</div>
+            </div>
+        );
+    }
+}
+
 function ResourceContainer(props: Props) {
     return (
         <div className="container app-wrap">
@@ -19,7 +31,7 @@ function ResourceContainer(props: Props) {
 
             <div className="row">
                 <div className="col-xs-12">
-                    <ResourceTab name={props.active} items={props.resources} onDownloadAll={props.onDownloadAll} />
+                    {renderTab(props)}
                 </div>
             </div>
         </div>

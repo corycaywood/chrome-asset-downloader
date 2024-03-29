@@ -12,7 +12,7 @@ function ResourceTab(props: Props) {
     return (
         <div className="tab-content panel panel-default">
             <div className="panel-body download-all">
-                <button onClick={() => props.onDownloadAll()} className="btn btn-danger">Download All {props.name} as ZIP file</button>
+                <button onClick={() => props.onDownloadAll()} className="btn btn-danger">Download All {props.name} as a ZIP file</button>
             </div>
 
             {props.items.map(item => renderItem(`${props.name}-item-${props.items.indexOf(item)}`, item))}
