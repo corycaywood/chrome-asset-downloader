@@ -2,8 +2,13 @@ interface Resource {
     url: string;
 }
 
+interface StylesheetResource extends Resource {
+    images: Resource[],
+    fonts: Resource[]
+}
+
 interface Resources {
-    stylesheets: Resource[],
+    stylesheets: StylesheetResource[],
     scripts: Resource[],
     images: Resource[],
     fonts: Resource[]
