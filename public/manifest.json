@@ -8,10 +8,7 @@
     "type": "module"
   },
   "manifest_version": 3,
-	"permissions": [
-		"downloads"
-	],
   "host_permissions": [
-    "<all_urls>"
+    "https://*/*"
   ]
 }
