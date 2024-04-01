@@ -6,8 +6,7 @@ const srcDir = path.join(__dirname, "src");
 module.exports = {
     entry: {
       app: path.join(srcDir, 'index.tsx'),
-      devtools: path.join(srcDir, 'devtools', 'devtools.ts'),
-      serviceWorker: path.join(srcDir, 'devtools', 'service-worker.ts'),
+      devtools: path.join(srcDir, 'devtools.ts')
     },
     output: {
         path: path.join(__dirname, "dist/js"),
