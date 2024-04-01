@@ -1,7 +1,7 @@
 import { ZipWriter } from '@zip.js/zip.js';
 import { chunk } from 'lodash';
 
-import { fileNameFrom, extensionFrom } from '../utils/urls';
+import { fileNameFrom, extensionFrom } from '../parsers/urls';
 
 const fetchAction = async (url: string) => {
     const res = await fetch(url);

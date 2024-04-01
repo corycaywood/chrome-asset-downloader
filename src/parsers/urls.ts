@@ -1,4 +1,4 @@
-import hash from './hash';
+import hash from '../utils/hash';
 
 const fileNameFromDataUri = (uri: string) => hash(uri).toString().replace(/^-/, '') + '.' +
     uri.split(',')[0]

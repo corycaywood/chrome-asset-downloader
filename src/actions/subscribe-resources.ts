@@ -1,6 +1,6 @@
 import { groupBy, pick } from 'lodash';
 import { Resources } from '../resources/resource/Resource';
-import { getImagesFrom, getFontsFrom } from '../utils/stylesheet';
+import { getImagesFrom, getFontsFrom } from '../parsers/stylesheet';
 
 interface ChromeResource extends chrome.devtools.inspectedWindow.Resource {
     type: "stylesheet" | "script" | "sm-script" | "image" | "font" | "document"
@@ -16,7 +16,7 @@ const getResources = () : Promise<Resources> => new Promise((resolve) => {
     chrome.devtools.inspectedWindow.getResources(async resources => {
         resolve(
             await parseResources(resources as ChromeResource[])
-        )
+        );
     });
 })
 

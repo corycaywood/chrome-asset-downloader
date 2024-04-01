@@ -1,7 +1,7 @@
 import React, { ReactNode, CSSProperties } from 'react';
 import { Resources } from './resource/Resource';
 import ResourceName from './resource/ResourceName';
-import { fileNameFrom } from '../utils/urls';
+import { fileNameFrom } from '../parsers/urls';
 
 function renderResources(name: ResourceName, resources: Resources, onDownloadClick: (url: string, fileName: string) => void): ReactNode[] {
     switch(name) {
