@@ -21,7 +21,7 @@ const renderTab = (props: Props) => {
     const resources = renderResources(props.active, props.resources, props.onDownload, props.onDownloadAll);
 
     const createDownloadableUrls = () : DownloadableUrl[] => pickResources(props.active, props.resources)
-        .map(it => ({url: it.url}));
+        .map(it => ({url: it.url, savePath: props.active.toLowerCase()}));
 
     if (resources.length > 0) {
         return <ResourceTab 

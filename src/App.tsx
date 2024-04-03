@@ -31,7 +31,7 @@ function App() {
         setIsDownloading(true);
         setDownloadProgress(0);
         const title = await getPageTitle();
-        await downloadAll(urls, zipFileName(fileNamePostfix, title), onDownloadProgress);
+        await downloadAll(urls, zipFileName(title), onDownloadProgress);
         setIsDownloading(false);
     }
 

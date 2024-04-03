@@ -4,21 +4,23 @@ import { chunk } from 'lodash';
 import DownloadableUrl from '../DownloadableUrl';
 import { fileNameFrom, extensionFrom } from '../parsers/urls';
 
-export default async function createZip(urls: DownloadableUrl[], onProgress: (progress: number) => void, concurrent: number = 5) {
+export default async function createZip(
+    urls: DownloadableUrl[], 
+    onProgress: (progress: number) => void, 
+    concurrent: number = 5
+) {
     const zipFileStream = new TransformStream();
     const zipWriter = new ZipWriter(zipFileStream.writable);
     let progress = 0;
 
-    const zipAction = (fileName: string, blob: Blob) => {
-        onProgress(progress++ / urls.length * 100);
-        zipWriter.add(fileName, blob.stream());
-    }
+    const zipAction = (fileName: string, blob: Blob) => zipWriter.add(fileName, blob.stream());
 
     for await (const urlsChunk of chunk(urls, concurrent)) {
         await Promise.all(
             urlsChunk.map(async (item) => {
                 const blob = await fetchAction(item.url);
                 zipAction(filenameWithPath(blob.fileName, item.savePath), blob.blob)
+                onProgress(progress++ / urls.length * 100);
             })
         );
     }
