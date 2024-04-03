@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import ResourceName from '../resource/ResourceName'
+import DownloadableUrl from '../../DownloadableUrl';
 
 interface Props extends React.PropsWithChildren {
     name: ResourceName,
@@ -23,7 +24,7 @@ function ResourceTab(props: Props) {
 function renderItem(key: string, item: ReactNode) {
     return (
         <div key={key} className="item">
-            <div className="panel-heading stylesheet-item">
+            <div className="panel-heading">
                 <div className="button-wrap">
                     {item}
                 </div>

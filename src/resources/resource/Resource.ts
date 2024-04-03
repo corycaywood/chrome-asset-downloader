@@ -24,5 +24,6 @@ const emptyResources = {
 export {
     Resource,
     Resources,
+    StylesheetResource,
     emptyResources
 }

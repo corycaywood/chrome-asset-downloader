@@ -4,9 +4,9 @@ import './css/style.css';
 
 import ResourceName from './resources/resource/ResourceName';
 import ResourceContainer from './resources/ResourceContainer';
-import DownloadDialog from './DownloadDialog'
+import DownloadableUrl from './DownloadableUrl';
+import DownloadDialog from './DownloadDialog';
 import { Resources, emptyResources } from './resources/resource/Resource';
-import renderResources from './resources/render-resources';
 import download from './actions/download';
 import subscribeResources from './actions/subscribe-resources';
 import getPageTitle from './actions/get-page-title';
@@ -27,11 +27,11 @@ function App() {
 
     const onDownloadProgress = (progress: number) => setDownloadProgress(progress);
 
-    const onDownload = async () => {
+    const onDownloadAll = async (urls: DownloadableUrl[], fileNamePostfix: string = active) => {
         setIsDownloading(true);
         setDownloadProgress(0);
         const title = await getPageTitle();
-        await downloadAll(active, resources, zipFileName(active, title), onDownloadProgress);
+        await downloadAll(urls, zipFileName(fileNamePostfix, title), onDownloadProgress);
         setIsDownloading(false);
     }
 
@@ -40,9 +40,10 @@ function App() {
             <ResourceContainer 
                 active={active} 
                 tabNames={tabNames} 
-                resources={renderResources(active, resources, download)} 
+                resources={resources} 
                 onChangeTab={(name: ResourceName) => setActive(name)} 
-                onDownloadAll={() => onDownload()}
+                onDownload={download}
+                onDownloadAll={onDownloadAll}
                 />
             <DownloadDialog visible={isDownloading} progress={downloadProgress} />
         </div>

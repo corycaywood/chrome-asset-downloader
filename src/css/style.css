@@ -52,6 +52,7 @@
         .category .progress {left: -15px; right: -15px; height: 3px; opacity: 1;}
 		
 	/* Stylesheet Items */
+	.stylesheet-container {padding-left: 25px;}
 	.stylesheet-item-wrap {padding-left: 25px;}
 	.stylesheet-item {position: relative; padding: 15px 25px; border-top: 1px solid #d2dbed;}
 	.stylesheet-item .text {padding: 0 105px 0 0; font-weight: bold;}

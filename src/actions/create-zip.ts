@@ -1,7 +1,32 @@
 import { ZipWriter } from '@zip.js/zip.js';
 import { chunk } from 'lodash';
 
+import DownloadableUrl from '../DownloadableUrl';
 import { fileNameFrom, extensionFrom } from '../parsers/urls';
+
+export default async function createZip(urls: DownloadableUrl[], onProgress: (progress: number) => void, concurrent: number = 5) {
+    const zipFileStream = new TransformStream();
+    const zipWriter = new ZipWriter(zipFileStream.writable);
+    let progress = 0;
+
+    const zipAction = (fileName: string, blob: Blob) => {
+        onProgress(progress++ / urls.length * 100);
+        zipWriter.add(fileName, blob.stream());
+    }
+
+    for await (const urlsChunk of chunk(urls, concurrent)) {
+        await Promise.all(
+            urlsChunk.map(async (item) => {
+                const blob = await fetchAction(item.url);
+                zipAction(filenameWithPath(blob.fileName, item.savePath), blob.blob)
+            })
+        );
+    }
+
+    zipWriter.close();
+
+    return await new Response(zipFileStream.readable).blob();
+}
 
 const fetchAction = async (url: string) => {
     const res = await fetch(url);
@@ -17,22 +42,4 @@ const fetchAction = async (url: string) => {
     return { blob, fileName };
 }
 
-export default async function createZip(urls: string[], onProgress: (progress: number) => void, concurrent: number = 5) {
-    const zipFileStream = new TransformStream();
-    const zipWriter = new ZipWriter(zipFileStream.writable);
-    let progress = 0;
-
-    const zipAction = ({fileName, blob}: {fileName: string, blob: Blob}) => {
-        onProgress(progress++ / urls.length * 100);
-        zipWriter.add(fileName, blob.stream());
-    }
-
-    for await (const urlsChunk of chunk(urls, concurrent)) {
-        const blobs = await Promise.all(urlsChunk.map(fetchAction));
-        blobs.forEach(zipAction);
-    }
-
-    zipWriter.close();
-
-    return await new Response(zipFileStream.readable).blob();
-}
+const filenameWithPath = (filename: string, path?: string) => (path && `${path}/`) + filename;
