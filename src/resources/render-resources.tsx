@@ -1,4 +1,4 @@
-import React, { ReactNode, CSSProperties } from 'react';
+import React, { ReactNode, CSSProperties, PropsWithChildren } from 'react';
 
 import { Resources, StylesheetResource } from './resource/Resource';
 import ResourceName from './resource/ResourceName';
@@ -16,15 +16,21 @@ function renderResources(
         case ResourceName.stylesheets:
             return resources.stylesheets.map(stylesheet => renderStylesheet(stylesheet, onDownload, onDownloadAll));
         case ResourceName.images:
-            return resources.images.map(image => renderImage(image.url, onDownload));
+            return resources.images.map(image => renderWrappedImage(image.url, onDownload));
         case ResourceName.scripts:
             return resources.scripts.map(script => renderScript(script.url, onDownload));
         case ResourceName.fonts:
-            return resources.fonts.map(font => renderFont(font.url, onDownload));
+            return resources.fonts.map(font => renderWrappedFont(font.url, onDownload));
         default:
             return [<div></div>]
     }
 }
+
+const ResourceWrapper = (props: PropsWithChildren) => (
+    <div className="panel-heading">
+        {props.children}
+    </div>
+)
 
 const renderStylesheet = (
     stylesheet: StylesheetResource, 
@@ -34,22 +40,28 @@ const renderStylesheet = (
     <Stylesheet
         stylesheet={stylesheet}
         downloadLink={renderDownloadLink(stylesheet.url, onDownload)}
-        onClickDownload={onDownloadAll}
+        onClickDownloadAll={onDownloadAll}
+        onClickDownload={onDownload}
     />
 )
 
 const renderImage = (url: string, onDownload: (url: string, fileName: string) => void) => (
-    <div>
+    <>
         <img src={url} />
         {renderDownloadLink(url, onDownload)}
-    </div>
+    </>
+)
+const renderWrappedImage = (url: string, onDownload: (url: string, fileName: string) => void) => (
+    <ResourceWrapper>
+        {renderImage(url, onDownload)}
+    </ResourceWrapper>
 )
 
 const renderScript = (url: string, onDownload: (url: string, fileName: string) => void) => (
-    <div>
+    <ResourceWrapper>
         <div className="url"><a href={url} target="_blank">{url}</a></div>
         {renderDownloadLink(url, onDownload)}
-    </div>
+    </ResourceWrapper>
 )
 
 const renderFont = (url: string, onDownload: (url: string, fileName: string) => void) => {
@@ -58,7 +70,7 @@ const renderFont = (url: string, onDownload: (url: string, fileName: string) => 
         fontFamily: fontName
     }
     return (
-        <div>
+        <>
             <style>
                 {`@font-face {
                     font-family: ${fontName};
@@ -67,7 +79,14 @@ const renderFont = (url: string, onDownload: (url: string, fileName: string) => 
             </style>
             <div className="font-example" style={style}>Grumpy wizards make toxic brew for the evil Queen and Jack.</div>
             {renderDownloadLink(url, onDownload)}
-        </div>
+        </>
+    )
+}
+const renderWrappedFont = (url: string, onDownload: (url: string, fileName: string) => void) => {
+    return (
+        <ResourceWrapper>
+            {renderFont(url, onDownload)}
+        </ResourceWrapper>
     )
 }
 
@@ -81,3 +100,8 @@ const renderDownloadLink = (url: string, onDownload: (url: string, fileName: str
 }
 
 export default renderResources;
+
+export {
+    renderImage, 
+    renderFont
+}

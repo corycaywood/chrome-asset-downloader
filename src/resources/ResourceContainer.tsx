@@ -17,6 +17,20 @@ interface Props {
     onDownload: (url: string, fileName: string) => void
 }
 
+function ResourceContainer(props: Props) {
+    return (
+        <div className="container app-wrap">
+            <ResourceTabButtons names={props.tabNames} active={props.active} onClick={props.onChangeTab}/>
+
+            <div className="row">
+                <div className="col-xs-12">
+                    {renderTab(props)}
+                </div>
+            </div>
+        </div>
+    );
+}
+
 const renderTab = (props: Props) => {
     const resources = renderResources(props.active, props.resources, props.onDownload, props.onDownloadAll);
 
@@ -35,20 +49,6 @@ const renderTab = (props: Props) => {
             </div>
         );
     }
-}
-
-function ResourceContainer(props: Props) {
-    return (
-        <div className="container app-wrap">
-            <ResourceTabButtons names={props.tabNames} active={props.active} onClick={props.onChangeTab}/>
-
-            <div className="row">
-                <div className="col-xs-12">
-                    {renderTab(props)}
-                </div>
-            </div>
-        </div>
-    );
 }
 
 export default ResourceContainer;

@@ -22,8 +22,9 @@
 	
 	/* Heading */
 	.text {display: inline-block; word-break: break-word; padding-left: 25px;}
-	.panel-heading {position: relative; min-height: 48px; border: none; background: #fff; border-top: 1px solid #d2dbed; border-radius: 0; padding-top: 6px; padding-bottom: 6px;}
+	.panel-heading {position: relative; min-height: 48px; border: none; background: #fff; border-top: 1px solid #d2dbed; border-radius: 0; padding: 15px 25px}
     .item:first-child .panel-heading {border-top: none;}
+	.panel-body {padding: 15px 25px;}
 
 	/* Expand Button */
 	.expand {position: absolute; top: 6px; left: 0; display:inline-block; cursor: pointer; color: #666;}
@@ -32,8 +33,7 @@
 	.expand.expanded .expand-icon {display: none;}
 	.expand.expanded .collapse-icon {display: inline;}
 		/* Expandable items */
-		.expandable {transition: height 350ms ease; overflow:hidden; height: 0;}
-		.expandable.expanded {}
+		.expandable {overflow:hidden; height: 0;}
 		
 	/* URLs */
 	.url {white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.75em;}
@@ -42,7 +42,7 @@
 	.categories {padding-top: 0; padding-bottom: 0; background: #f3f7fc;}
     .category {position: relative;}
 	.sub-parent {padding: 6px 0; min-height: 48px; display: flex; align-items: center;}
-	.sub-parent .text {text-transform: capitalize;}
+	.sub-parent .text {padding-left: 0; }
 	.sub-parent button {}
 	.category:before {content: ""; border-bottom: 1px solid #d2dbed; display: block; margin-left: -15px; margin-right: -15px;}
 	.category:last-child:after {display: none;}
@@ -52,15 +52,17 @@
         .category .progress {left: -15px; right: -15px; height: 3px; opacity: 1;}
 		
 	/* Stylesheet Items */
-	.stylesheet-container {padding-left: 25px;}
+	.stylesheet-container .button-wrap {padding-left: 25px;}
+	.stylesheet-container .panel-heading {padding-left: 15px;}
+	.stylesheet-container .panel-body {padding-left: 15px;}
 	.stylesheet-item-wrap {padding-left: 25px;}
 	.stylesheet-item {position: relative; padding: 15px 25px; border-top: 1px solid #d2dbed;}
 	.stylesheet-item .text {padding: 0 105px 0 0; font-weight: bold;}
     .stylesheet-item button {top: 20px;}
 	.stylesheet-item img {max-width: 100%; margin: 10px 0;}
     .stylesheet-item a {cursor: pointer;}
-		/* Font example */
-		.stylesheet-item .font-example {font-size: 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+	/* Font example */
+	.font-example {font-size: 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
 
 	/* Download Progress modal */
 	.modal { display: flex; align-items: center; justify-content: center; }
