@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 
 import ResourceName from '../resource/ResourceName'
-import DownloadableUrl from '../../DownloadableUrl';
 
 interface Props extends React.PropsWithChildren {
     name: ResourceName,

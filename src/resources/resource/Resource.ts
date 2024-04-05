@@ -1,5 +1,9 @@
+import ResourceName from "./ResourceName";
+
 interface Resource {
     url: string;
+    type: ResourceName;
+    getContent?: () => Promise<{content: string, encoding: string}>;
 }
 
 interface StylesheetResource extends Resource {

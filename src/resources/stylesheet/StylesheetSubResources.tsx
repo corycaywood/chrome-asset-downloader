@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { Resource } from '../resource/Resource'
 import ResourceName from '../resource/ResourceName';
-import DownloadableUrl from '../../DownloadableUrl'
 import ExpandButton from './ExpandButton';
 import ExpandableSection from './ExpandableSection';
 import { renderImage, renderFont } from '../render-resources';
@@ -11,13 +10,11 @@ interface Props {
 	title: ResourceName;
 	subResources: Resource[]
 	onClickDownload: (url: string, fileName: string) => void;
-	onClickDownloadAll: (urls: DownloadableUrl[]) => void;
+	onClickDownloadAll: (resources: Resource[]) => void;
 }
 
 function StylesheetSubResources(props: Props) {
 	const [expanded, setExpanded] = useState(false);
-
-    const collectResources = () => props.subResources.map(font => ({url: font.url, savePath: props.title.toLowerCase()}));
 
 	const renderSubResource = (resource: Resource, key: string) => (
 		<div className="stylesheet-item" key={key}>
@@ -36,7 +33,7 @@ function StylesheetSubResources(props: Props) {
 					{props.title}
 				</span>
 				<button className="btn btn-default" 
-					onClick={() => props.onClickDownloadAll(collectResources())}
+					onClick={() => props.onClickDownloadAll(props.subResources)}
 				>
 					Download {props.title}
 				</button>

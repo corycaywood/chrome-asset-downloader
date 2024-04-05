@@ -1,16 +1,15 @@
 import React, { ReactNode, CSSProperties, PropsWithChildren } from 'react';
 
-import { Resources, StylesheetResource } from './resource/Resource';
+import { Resource, Resources, StylesheetResource } from './resource/Resource';
 import ResourceName from './resource/ResourceName';
 import Stylesheet from './stylesheet/Stylesheet';
 import { fileNameFrom } from '../parsers/urls';
-import DownloadableUrl from '../DownloadableUrl';
 
 function renderResources(
     name: ResourceName,
     resources: Resources,
     onDownload: (url: string, fileName: string) => void,
-    onDownloadAll: (urls: DownloadableUrl[]) => void
+    onDownloadAll: (resources: Resource[]) => void
 ): ReactNode[] {
     switch(name) {
         case ResourceName.stylesheets:
@@ -35,7 +34,7 @@ const ResourceWrapper = (props: PropsWithChildren) => (
 const renderStylesheet = (
     stylesheet: StylesheetResource, 
     onDownload: (url: string, fileName: string) => void, 
-    onDownloadAll: (urls: DownloadableUrl[]) => void
+    onDownloadAll: (resources: Resource[]) => void
 ) => (
     <Stylesheet
         stylesheet={stylesheet}

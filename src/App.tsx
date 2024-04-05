@@ -4,9 +4,8 @@ import './css/style.css';
 
 import ResourceName from './resources/resource/ResourceName';
 import ResourceContainer from './resources/ResourceContainer';
-import DownloadableUrl from './DownloadableUrl';
 import DownloadDialog from './DownloadDialog';
-import { Resources, emptyResources } from './resources/resource/Resource';
+import { Resource, Resources, emptyResources } from './resources/resource/Resource';
 import download from './actions/download';
 import subscribeResources from './actions/subscribe-resources';
 import getPageTitle from './actions/get-page-title';
@@ -27,11 +26,11 @@ function App() {
 
     const onDownloadProgress = (progress: number) => setDownloadProgress(progress);
 
-    const onDownloadAll = async (urls: DownloadableUrl[], fileNamePostfix: string = active) => {
+    const onDownloadAll = async (resources: Resource[], fileNamePostfix: string = active) => {
         setIsDownloading(true);
         setDownloadProgress(0);
         const title = await getPageTitle();
-        await downloadAll(urls, zipFileName(title), onDownloadProgress);
+        await downloadAll(resources, zipFileName(title), onDownloadProgress);
         setIsDownloading(false);
     }
 

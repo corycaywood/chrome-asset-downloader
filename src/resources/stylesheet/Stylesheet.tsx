@@ -1,7 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 
-import { StylesheetResource } from '../resource/Resource'
-import DownloadableUrl from '../../DownloadableUrl';
+import { Resource, StylesheetResource } from '../resource/Resource'
 import ExpandButton from './ExpandButton';
 import ExpandableSection from './ExpandableSection';
 import StylesheetSubResources from './StylesheetSubResources';
@@ -10,7 +9,7 @@ import ResourceName from '../resource/ResourceName';
 interface Props {
     stylesheet: StylesheetResource;
     downloadLink: ReactNode;
-    onClickDownloadAll: (urls: DownloadableUrl[]) => void;
+    onClickDownloadAll: (resources: Resource[]) => void;
     onClickDownload: (url: string, filename: string) => void;
 }
 
@@ -21,8 +20,7 @@ function Stylesheet(props: Props) {
     const hasFonts = () => props.stylesheet.fonts.length > 0;
     const hasSubResources = () => hasImages() || hasFonts();
 
-    const collectResources = () => props.stylesheet.fonts.map(font => ({url: font.url, savePath: 'fonts'}))
-        .concat(props.stylesheet.images.map(image => ({url: image.url, savePath: 'images'})));
+    const collectResources = () => props.stylesheet.fonts.concat(props.stylesheet.images);
 
     return (
         <div className="stylesheet-container">
