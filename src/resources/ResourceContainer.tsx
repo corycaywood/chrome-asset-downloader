@@ -6,6 +6,7 @@ import ResourceTab from './resource-tab/ResourceTab';
 import { Resource, Resources } from './resource/Resource';
 import renderResources from './render-resources';
 import { pickResources } from '../utils/pick-resources';
+import { ResourceDownloader } from '../actions/download';
 
 interface Props {
     active: ResourceName,
@@ -13,7 +14,7 @@ interface Props {
     resources: Resources,
     onChangeTab: (name: ResourceName) => void,
     onDownloadAll: (resources: Resource[]) => void
-    onDownload: (url: string, fileName: string) => void
+    onDownload: ResourceDownloader
 }
 
 function ResourceContainer(props: Props) {

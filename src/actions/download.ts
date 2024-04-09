@@ -1,10 +1,16 @@
+import { Resource } from '../resources/resource/Resource';
+import getResourceBlob from './get-resource-blob';
 import triggerDownload from './trigger-download';
 
-export default async function download(url: string, fileName: string) {
-    return fetch(url)
-        .then(res => res.blob())
-        .then(blob => {
-            const url = URL.createObjectURL(blob);
-            triggerDownload(url, fileName)
-        })
+type ResourceDownloader = (resource: Resource, fileName: string) => void;
+
+const download : ResourceDownloader = async (resource: Resource, fileName: string) => {
+    const blob = await getResourceBlob(resource);
+    const url = URL.createObjectURL(blob);
+
+    triggerDownload(url, fileName);
 }
+
+export default download;
+
+export { ResourceDownloader }

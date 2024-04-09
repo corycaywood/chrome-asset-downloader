@@ -4,22 +4,23 @@ import { Resource, Resources, StylesheetResource } from './resource/Resource';
 import ResourceName from './resource/ResourceName';
 import Stylesheet from './stylesheet/Stylesheet';
 import { fileNameFrom } from '../parsers/urls';
+import { ResourceDownloader } from '../actions/download';
 
 function renderResources(
     name: ResourceName,
     resources: Resources,
-    onDownload: (url: string, fileName: string) => void,
+    onDownload: ResourceDownloader,
     onDownloadAll: (resources: Resource[]) => void
 ): ReactNode[] {
     switch(name) {
         case ResourceName.stylesheets:
             return resources.stylesheets.map(stylesheet => renderStylesheet(stylesheet, onDownload, onDownloadAll));
         case ResourceName.images:
-            return resources.images.map(image => renderWrappedImage(image.url, onDownload));
+            return resources.images.map(image => renderWrappedImage(image, onDownload));
         case ResourceName.scripts:
-            return resources.scripts.map(script => renderScript(script.url, onDownload));
+            return resources.scripts.map(script => renderScript(script, onDownload));
         case ResourceName.fonts:
-            return resources.fonts.map(font => renderWrappedFont(font.url, onDownload));
+            return resources.fonts.map(font => renderWrappedFont(font, onDownload));
         default:
             return [<div></div>]
     }
@@ -33,38 +34,38 @@ const ResourceWrapper = (props: PropsWithChildren) => (
 
 const renderStylesheet = (
     stylesheet: StylesheetResource, 
-    onDownload: (url: string, fileName: string) => void, 
+    onDownload: ResourceDownloader, 
     onDownloadAll: (resources: Resource[]) => void
 ) => (
     <Stylesheet
         stylesheet={stylesheet}
-        downloadLink={renderDownloadLink(stylesheet.url, onDownload)}
+        downloadLink={renderDownloadLink(stylesheet, onDownload)}
         onClickDownloadAll={onDownloadAll}
         onClickDownload={onDownload}
     />
 )
 
-const renderImage = (url: string, onDownload: (url: string, fileName: string) => void) => (
+const renderImage = (resource: Resource, onDownload: ResourceDownloader) => (
     <>
-        <img src={url} />
-        {renderDownloadLink(url, onDownload)}
+        <img src={resource.url} />
+        {renderDownloadLink(resource, onDownload)}
     </>
 )
-const renderWrappedImage = (url: string, onDownload: (url: string, fileName: string) => void) => (
+const renderWrappedImage = (resource: Resource, onDownload: ResourceDownloader) => (
     <ResourceWrapper>
-        {renderImage(url, onDownload)}
+        {renderImage(resource, onDownload)}
     </ResourceWrapper>
 )
 
-const renderScript = (url: string, onDownload: (url: string, fileName: string) => void) => (
+const renderScript = (resource: Resource, onDownload: ResourceDownloader) => (
     <ResourceWrapper>
-        <div className="url"><a href={url} target="_blank">{url}</a></div>
-        {renderDownloadLink(url, onDownload)}
+        <div className="url"><a href={resource.url} target="_blank">{resource.url}</a></div>
+        {renderDownloadLink(resource, onDownload)}
     </ResourceWrapper>
 )
 
-const renderFont = (url: string, onDownload: (url: string, fileName: string) => void) => {
-    const fontName = `font-${fileNameFrom(url).split('.')[0]}`
+const renderFont = (resource: Resource, onDownload: ResourceDownloader) => {
+    const fontName = `font-${fileNameFrom(resource.url).split('.')[0]}`
     const style: CSSProperties = {
         fontFamily: fontName
     }
@@ -73,27 +74,27 @@ const renderFont = (url: string, onDownload: (url: string, fileName: string) => 
             <style>
                 {`@font-face {
                     font-family: ${fontName};
-                    src: url(${url})
+                    src: url(${resource.url})
                 }`}
             </style>
             <div className="font-example" style={style}>Grumpy wizards make toxic brew for the evil Queen and Jack.</div>
-            {renderDownloadLink(url, onDownload)}
+            {renderDownloadLink(resource, onDownload)}
         </>
     )
 }
-const renderWrappedFont = (url: string, onDownload: (url: string, fileName: string) => void) => {
+const renderWrappedFont = (resource: Resource, onDownload: ResourceDownloader) => {
     return (
         <ResourceWrapper>
-            {renderFont(url, onDownload)}
+            {renderFont(resource, onDownload)}
         </ResourceWrapper>
     )
 }
 
-const renderDownloadLink = (url: string, onDownload: (url: string, fileName: string) => void) => {
-    const fileName = fileNameFrom(url)
+const renderDownloadLink = (resource: Resource, onDownload: ResourceDownloader) => {
+    const fileName = fileNameFrom(resource.url)
     return (
         <div className="url">
-            {fileName} - <a title={url} href={url} onClick={(e) => {e.preventDefault(); onDownload(url, fileName)}}>Download</a>
+            {fileName} - <a title={resource.url} href={resource.url} onClick={(e) => {e.preventDefault(); onDownload(resource, fileName)}}>Download</a>
         </div>
     );
 }

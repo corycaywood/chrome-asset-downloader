@@ -5,11 +5,12 @@ import ResourceName from '../resource/ResourceName';
 import ExpandButton from './ExpandButton';
 import ExpandableSection from './ExpandableSection';
 import { renderImage, renderFont } from '../render-resources';
+import { ResourceDownloader } from '../../actions/download';
 
 interface Props {
 	title: ResourceName;
 	subResources: Resource[]
-	onClickDownload: (url: string, fileName: string) => void;
+	onClickDownload: ResourceDownloader;
 	onClickDownloadAll: (resources: Resource[]) => void;
 }
 
@@ -18,8 +19,8 @@ function StylesheetSubResources(props: Props) {
 
 	const renderSubResource = (resource: Resource, key: string) => (
 		<div className="stylesheet-item" key={key}>
-			{props.title == ResourceName.images && renderImage(resource.url, props.onClickDownload)}
-			{props.title == ResourceName.fonts && renderFont(resource.url, props.onClickDownload)}
+			{props.title == ResourceName.images && renderImage(resource, props.onClickDownload)}
+			{props.title == ResourceName.fonts && renderFont(resource, props.onClickDownload)}
 		</div>
 	)
 

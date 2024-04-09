@@ -15,7 +15,6 @@ export default async function subscribeResources(callback: (resources: Resources
 
 const getResources = () : Promise<Resources> => new Promise((resolve) => {
     chrome.devtools.inspectedWindow.getResources(async resources => {
-        console.log(resources)
         resolve(
             await parseResources(resources as ChromeResource[])
         );

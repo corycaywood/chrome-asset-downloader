@@ -26,7 +26,7 @@ function App() {
 
     const onDownloadProgress = (progress: number) => setDownloadProgress(progress);
 
-    const onDownloadAll = async (resources: Resource[], fileNamePostfix: string = active) => {
+    const onDownloadAll = async (resources: Resource[]) => {
         setIsDownloading(true);
         setDownloadProgress(0);
         const title = await getPageTitle();

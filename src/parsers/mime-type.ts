@@ -1,16 +1,14 @@
 import ResourceName from '../resources/resource/ResourceName';
 
 export default function mimeTypeFrom(extension: string, type: ResourceName) {
-    if (extension == '') {
-        return 'text/plain';
-    }
-
     switch(type) {
         case ResourceName.images:
             if (extension == 'svg') {
-                return 'image/svg+xml'
+                return 'image/svg+xml';
+            } else if (extension == '') {
+                return 'image/png';
             } else {
-                return `image/${extension}`
+                return `image/${extension}`;
             }
         case ResourceName.stylesheets:
             return 'text/css';
