@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 import ResourceName from './resource/ResourceName';
 import ResourceTabButtons from './resource-tab-buttons/ResourceTabButtons';
 import ResourceTab from './resource-tab/ResourceTab';
+import FullRow from '../FullRow';
 import { Resource, Resources } from './resource/Resource';
 import renderResources from './render-resources';
 import { pickResources } from '../../utils/pick-resources';
@@ -20,13 +21,17 @@ interface Props {
 function ResourceContainer(props: Props) {
     return (
         <div className="container app-wrap">
-            <ResourceTabButtons names={props.tabNames} active={props.active} onClick={props.onChangeTab}/>
+            <FullRow className="nav-container">
+                <ResourceTabButtons names={props.tabNames} active={props.active} onClick={props.onChangeTab}/>
+            </FullRow>
+            
+            <FullRow>
+                <p>Files will be downloaded as a <strong>ZIP file</strong>.</p>
+            </FullRow>
 
-            <div className="row">
-                <div className="col-xs-12">
-                    {renderTab(props)}
-                </div>
-            </div>
+            <FullRow>
+                {renderTab(props)}
+            </FullRow>
         </div>
     );
 }

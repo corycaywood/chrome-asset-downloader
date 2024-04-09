@@ -16,15 +16,16 @@
 	.tab-content.active {opacity: 1; position: static;}
 	
 	/* Tabs */
-	.nav-pills {margin-top: 20px;}
+	.nav-container {margin-top: 20px;}
 	.nav-pills li a {text-transform: capitalize; color: #fff; background: rgba(51,122,183,0.5); margin: 0 6px 10px 0; cursor: pointer;}
 	.nav-pills li a:hover {background: rgba(51,122,183,1); border-color: transparent;}
+	.nav-container .btn {float: right; padding: 10px 15px;}
 	
 	/* Heading */
 	.text {display: inline-block; word-break: break-word; padding-left: 25px;}
 	.panel-heading {position: relative; min-height: 48px; border: none; background: #fff; border-top: 1px solid #d2dbed; border-radius: 0; padding: 15px 25px}
     .item:first-child .panel-heading {border-top: none;}
-	.panel-body {padding: 15px 25px;}
+	.panel-body {background: #f3f7fc; padding: 15px 25px;}
 
 	/* Expand Button */
 	.expand {position: absolute; top: 6px; left: 0; display:inline-block; cursor: pointer; color: #666;}

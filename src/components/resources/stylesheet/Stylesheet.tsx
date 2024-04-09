@@ -30,7 +30,7 @@ function Stylesheet(props: Props) {
                     {hasSubResources() && <ExpandButton 
                         expanded={expanded} 
                         onClickExpand={() => setExpanded(!expanded)} 
-                    />}{hasSubResources() && <button className="btn btn-danger" onClick={() => props.onClickDownloadAll(collectResources())}>
+                    />}{hasSubResources() && <button className="btn btn-default" onClick={() => props.onClickDownloadAll(collectResources())}>
                         Download Assets
                     </button>}
                     <div className="url"><a href={props.stylesheet.url} target="_blank">{props.stylesheet.url}</a></div>
