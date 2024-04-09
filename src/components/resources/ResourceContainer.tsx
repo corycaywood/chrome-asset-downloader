@@ -20,7 +20,7 @@ interface Props {
 
 function ResourceContainer(props: Props) {
     return (
-        <div className="container app-wrap">
+        <>
             <FullRow className="nav-container">
                 <button 
                     className="btn btn-danger" 
@@ -38,7 +38,7 @@ function ResourceContainer(props: Props) {
             <FullRow>
                 {renderTab(props)}
             </FullRow>
-        </div>
+        </>
     );
 }
 

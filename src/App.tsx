@@ -35,7 +35,7 @@ function App() {
     }
 
     return (
-        <div>
+        <div className="container app-wrap">
             <ResourceContainer 
                 active={active} 
                 tabNames={tabNames} 
