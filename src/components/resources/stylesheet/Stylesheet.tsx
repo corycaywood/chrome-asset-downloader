@@ -5,7 +5,7 @@ import ExpandButton from './ExpandButton';
 import ExpandableSection from './ExpandableSection';
 import StylesheetSubResources from './StylesheetSubResources';
 import ResourceName from '../resource/ResourceName';
-import { ResourceDownloader } from '../../actions/download';
+import { ResourceDownloader } from '../../../actions/download';
 
 interface Props {
     stylesheet: StylesheetResource;

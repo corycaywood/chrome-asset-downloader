@@ -3,8 +3,8 @@ import React, { ReactNode, CSSProperties, PropsWithChildren } from 'react';
 import { Resource, Resources, StylesheetResource } from './resource/Resource';
 import ResourceName from './resource/ResourceName';
 import Stylesheet from './stylesheet/Stylesheet';
-import { fileNameFrom } from '../parsers/urls';
-import { ResourceDownloader } from '../actions/download';
+import { fileNameFrom } from '../../parsers/urls';
+import { ResourceDownloader } from '../../actions/download';
 
 function renderResources(
     name: ResourceName,

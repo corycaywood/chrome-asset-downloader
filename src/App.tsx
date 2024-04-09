@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import './css/style.css';
 
-import ResourceName from './resources/resource/ResourceName';
-import ResourceContainer from './resources/ResourceContainer';
-import DownloadDialog from './DownloadDialog';
-import { Resource, Resources, emptyResources } from './resources/resource/Resource';
+import ResourceName from './components/resources/resource/ResourceName';
+import ResourceContainer from './components/resources/ResourceContainer';
+import DownloadDialog from './components/DownloadDialog';
+import { Resource, Resources, emptyResources } from './components/resources/resource/Resource';
 import download from './actions/download';
 import subscribeResources from './actions/subscribe-resources';
 import getPageTitle from './actions/get-page-title';

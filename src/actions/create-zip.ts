@@ -3,7 +3,7 @@ import { chunk } from 'lodash';
 
 import getResourceBlob from './get-resource-blob';
 import { fileNameFrom } from '../parsers/urls';
-import { Resource } from '../resources/resource/Resource';
+import { Resource } from '../components/resources/resource/Resource';
 
 export default async function createZip(
     resources: Resource[], 

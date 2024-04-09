@@ -1,4 +1,4 @@
-import ResourceName from '../resources/resource/ResourceName';
+import ResourceName from '../components/resources/resource/ResourceName';
 
 export default function mimeTypeFrom(extension: string, type: ResourceName) {
     switch(type) {

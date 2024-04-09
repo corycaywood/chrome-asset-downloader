@@ -5,8 +5,8 @@ import ResourceTabButtons from './resource-tab-buttons/ResourceTabButtons';
 import ResourceTab from './resource-tab/ResourceTab';
 import { Resource, Resources } from './resource/Resource';
 import renderResources from './render-resources';
-import { pickResources } from '../utils/pick-resources';
-import { ResourceDownloader } from '../actions/download';
+import { pickResources } from '../../utils/pick-resources';
+import { ResourceDownloader } from '../../actions/download';
 
 interface Props {
     active: ResourceName,

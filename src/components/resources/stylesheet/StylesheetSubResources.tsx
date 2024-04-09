@@ -5,7 +5,7 @@ import ResourceName from '../resource/ResourceName';
 import ExpandButton from './ExpandButton';
 import ExpandableSection from './ExpandableSection';
 import { renderImage, renderFont } from '../render-resources';
-import { ResourceDownloader } from '../../actions/download';
+import { ResourceDownloader } from '../../../actions/download';
 
 interface Props {
 	title: ResourceName;

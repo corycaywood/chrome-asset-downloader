@@ -1,4 +1,4 @@
-import { Resource } from '../resources/resource/Resource';
+import { Resource } from '../components/resources/resource/Resource';
 import getResourceBlob from './get-resource-blob';
 import triggerDownload from './trigger-download';
 

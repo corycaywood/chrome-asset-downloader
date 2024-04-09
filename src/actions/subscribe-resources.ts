@@ -1,7 +1,7 @@
 import { groupBy, pick } from 'lodash';
-import { Resource, Resources } from '../resources/resource/Resource';
+import { Resource, Resources } from '../components/resources/resource/Resource';
 import { getImagesFrom, getFontsFrom } from '../parsers/stylesheet';
-import ResourceName from '../resources/resource/ResourceName';
+import ResourceName from '../components/resources/resource/ResourceName';
 
 interface ChromeResource extends chrome.devtools.inspectedWindow.Resource {
     type: "stylesheet" | "script" | "sm-script" | "image" | "font" | "document"

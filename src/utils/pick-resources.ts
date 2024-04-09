@@ -1,5 +1,5 @@
-import ResourceName from '../resources/resource/ResourceName';
-import { Resources } from '../resources/resource/Resource';
+import ResourceName from '../components/resources/resource/ResourceName';
+import { Resources } from '../components/resources/resource/Resource';
 
 const pickResources = (name: ResourceName, resources: Resources) => {
     switch(name) {

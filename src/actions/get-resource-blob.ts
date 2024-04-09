@@ -1,4 +1,4 @@
-import { Resource } from '../resources/resource/Resource';
+import { Resource } from '../components/resources/resource/Resource';
 import mimeFromExt from '../parsers/mime-type';
 import { extensionFrom } from '../parsers/urls';
 
