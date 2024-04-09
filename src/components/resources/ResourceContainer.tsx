@@ -22,6 +22,12 @@ function ResourceContainer(props: Props) {
     return (
         <div className="container app-wrap">
             <FullRow className="nav-container">
+                <button 
+                    className="btn btn-danger" 
+                    onClick={() => props.onDownloadAll(collectAllResources(props.resources))}
+                >
+                        Download Everything as ZIP
+                </button>
                 <ResourceTabButtons names={props.tabNames} active={props.active} onClick={props.onChangeTab}/>
             </FullRow>
             
@@ -54,5 +60,10 @@ const renderTab = (props: Props) => {
         );
     }
 }
+
+const collectAllResources = (resources: Resources) => resources.fonts
+    .concat(resources.images)
+    .concat(resources.scripts)
+    .concat(resources.stylesheets);
 
 export default ResourceContainer;

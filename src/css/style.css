@@ -19,7 +19,7 @@
 	.nav-container {margin-top: 20px;}
 	.nav-pills li a {text-transform: capitalize; color: #fff; background: rgba(51,122,183,0.5); margin: 0 6px 10px 0; cursor: pointer;}
 	.nav-pills li a:hover {background: rgba(51,122,183,1); border-color: transparent;}
-	.nav-container .btn {float: right; padding: 10px 15px;}
+	.nav-container .btn {width: 100%; padding: 10px 15px; margin-bottom: 20px;}
 	
 	/* Heading */
 	.text {display: inline-block; word-break: break-word; padding-left: 25px;}

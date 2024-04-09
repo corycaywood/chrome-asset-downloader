@@ -14,10 +14,6 @@ const pickResources = (name: ResourceName, resources: Resources) => {
     }
 }
 
-const pickResourceUrls = (name: ResourceName, resources: Resources) => 
-    pickResources(name, resources).map(resource => resource.url);
-
 export {
-    pickResources,
-    pickResourceUrls
+    pickResources
 };
