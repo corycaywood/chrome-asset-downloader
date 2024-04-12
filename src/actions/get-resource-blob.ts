@@ -22,8 +22,12 @@ const blobFromResourceContent = async (content: string, encoding: string, type: 
 }
 
 const fetchBlob = async (url: string) => {
-    const res = await fetch(url);
-    return await res.blob();
+    try {
+        const res = await fetch(url);
+        return await res.blob();
+    } catch(error) {
+        return Promise.reject(error);
+    }
 }
 
 export default getResourceBlob;

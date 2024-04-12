@@ -5,11 +5,11 @@ import Dialog from './Dialog';
 interface Props extends React.PropsWithChildren {
     visible: boolean;
     title: string;
-    confirmText: string;
-    cancelText: string;
+    confirmText?: string;
+    cancelText?: string;
     onClickCheckbox?: (checked: boolean) => void;
-    onClickConfirm: () => void;
-    onClickCancel: () => void;
+    onClickConfirm?: () => void;
+    onClickCancel?: () => void;
 }
 
 function ConfirmationDialog(props: Props) {
@@ -26,18 +26,22 @@ function ConfirmationDialog(props: Props) {
                     </label>
                 </span>
             )}
-            <button 
-                className="btn btn-default" 
-                onClick={props.onClickCancel}
-            >
-                {props.cancelText}
+            {(props.onClickCancel && 
+                <button 
+                    className="btn btn-default" 
+                    onClick={props.onClickCancel}
+                >
+                    {props.cancelText}
+                </button>
+            )}
+            {(props.onClickConfirm && 
+                <button 
+                    className="btn btn-primary" 
+                    onClick={props.onClickConfirm}
+                >
+                    {props.confirmText}
             </button>
-            <button 
-                className="btn btn-primary" 
-                onClick={props.onClickConfirm}
-            >
-                {props.confirmText}
-            </button>
+            )}
         </>
     )
 

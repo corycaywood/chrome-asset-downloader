@@ -7,30 +7,45 @@ import { Resource } from '../components/resources/resource/Resource';
 
 export default async function createZip(
     resources: Resource[], 
-    onProgress: (progress: number) => void, 
+    onProgress: (progress: number) => void,
     concurrent: number = 5
 ) {
     const zipFileStream = new TransformStream();
     const zipWriter = new ZipWriter(zipFileStream.writable);
     let progress = 0;
+    const success: string[] = [];
+    const failed: string[] = [];
 
     const zipAction = (fileName: string, blob: Blob) => zipWriter.add(fileName, blob.stream());
 
     for await (const urlsChunk of chunk(resources, concurrent)) {
-        await Promise.all(
+        const results = await Promise.allSettled(
             urlsChunk.map(async (item) => {
                 const blob = await getResourceBlob(item);
                 const fileName = fileNameFrom(item.url);
 
-                zipAction(filenameWithPath(fileName, item.type.toLowerCase()), blob)
+                zipAction(filenameWithPath(fileName, item.type.toLowerCase()), blob);
                 onProgress(progress++ / resources.length * 100);
             })
         );
+        results.forEach((result, index) => {
+            const url = urlsChunk[index].url;
+
+            if (result.status == 'rejected') {
+                failed.push(url)
+            } else {
+                success.push(url)
+            }
+        })
     }
 
     zipWriter.close();
 
-    return await new Response(zipFileStream.readable).blob();
+    const zip = await new Response(zipFileStream.readable).blob();
+    return {
+        zip,
+        failed
+    }
 }
 
 const filenameWithPath = (filename: string, path?: string) => (path && `${path}/`) + filename;

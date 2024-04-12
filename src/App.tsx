@@ -6,6 +6,7 @@ import ResourceName from './components/resources/resource/ResourceName';
 import ResourceContainer from './components/resources/ResourceContainer';
 import DownloadDialog from './components/dialogs/DownloadDialog';
 import PermissionDeniedDialog from './components/dialogs/PermissionDeniedDialog';
+import DownloadsFailedDialog from './components/dialogs/DownloadsFailedDialog';
 import { Resource, Resources, emptyResources } from './components/resources/resource/Resource';
 import download from './actions/download';
 import subscribeResources from './actions/subscribe-resources';
@@ -26,6 +27,7 @@ function App() {
     const [hasHostPermission, setHasHostPermission] = useState(false);
     const [dontAskPermissions, setDontAskPermissions] = useState(storage.dontAskPermissions());
     const [warningMessage, setWarningMessage] = useState<ReactNode | null>();
+    const [failedDownloads, setFailedDownloads] = useState<string[] | null>()
 
     useEffect(() => {
         subscribeResources(resources => setResources(resources));
@@ -65,7 +67,10 @@ function App() {
             setIsDownloading(true);
             setDownloadProgress(0);
             const title = await getPageTitle();
-            await downloadAll(resources, zipFileName(title), onDownloadProgress);
+            const response = await downloadAll(resources, zipFileName(title), onDownloadProgress);
+            if (response.failed.length > 0 && !hasHostPermission) {
+                setFailedDownloads(response.failed);
+            }
             setIsDownloading(false);
         }
 
@@ -117,6 +122,12 @@ function App() {
                 onClickCheckbox={(checked) => storage.setDontAskPermissions(checked)}
                 onRequestPermission={() => permissionDialogProps && permissionDialogProps.onConfirm()}
                 onCancel={() => permissionDialogProps && permissionDialogProps.onCancel()}
+            />
+
+            <DownloadsFailedDialog 
+                visible={failedDownloads != null}
+                failed={failedDownloads || []}
+                onClickOkay={() => setFailedDownloads(null)}
             />
         </div>
     );
