@@ -1,69 +1,74 @@
-	/* General */
-	a,
-	button {transition: background 500ms ease, color 250ms ease;}
-	p {margin: 10px 0 20px 0;}
-	.app-wrap {overflow: hidden;}
+/* General */
+a,
+button {transition: background 500ms ease, color 250ms ease;}
+p {margin: 10px 0 20px 0;}
+.app-wrap {overflow: hidden;}
 
-	/* Buttons */
-	.button-wrap {position: relative; z-index: 1; padding-right: 120px;}
-	.button-wrap button {position: absolute; right: 0; padding: 6px 10px; margin: 3px 0; font-size: 0.75em; text-transform: capitalize; width: 110px; text-transform: capitalize;}
-	.button-wrap button.btn-link {text-align: right; width: auto;}
-		/* Download All Button */
-		.download-all button {width: 100%; padding: 10px 15px; text-transform: capitalize;}
-	
-	/* Panel */
-	.tab-content {margin-bottom: 50px; overflow: hidden; transition: opacity 500ms ease;}
-	.tab-content.active {opacity: 1; position: static;}
-	
-	/* Tabs */
-	.nav-container {margin-top: 20px;}
-	.nav-pills li a {text-transform: capitalize; color: #fff; background: rgba(51,122,183,0.5); margin: 0 6px 10px 0; cursor: pointer;}
-	.nav-pills li a:hover {background: rgba(51,122,183,1); border-color: transparent;}
-	.nav-container .btn {width: 100%; padding: 10px 15px; margin-bottom: 20px;}
-	
-	/* Heading */
-	.text {display: inline-block; word-break: break-word; padding-left: 25px;}
-	.panel-heading {position: relative; min-height: 48px; border: none; background: #fff; border-top: 1px solid #d2dbed; border-radius: 0; padding: 15px 25px}
-    .item:first-child .panel-heading {border-top: none;}
-	.panel-body {background: #f3f7fc; padding: 15px 25px;}
+/* Buttons */
+.button-wrap {position: relative; z-index: 1; padding-right: 120px;}
+.button-wrap button {position: absolute; right: 0; padding: 6px 10px; margin: 3px 0; font-size: 0.75em; text-transform: capitalize; width: 110px; text-transform: capitalize;}
+.button-wrap button.btn-link {text-align: right; width: auto;}
+	/* Download All Button */
+	.download-all button {width: 100%; padding: 10px 15px; text-transform: capitalize;}
 
-	/* Expand Button */
-	.expand {position: absolute; top: 6px; left: 0; display:inline-block; cursor: pointer; color: #666;}
-	.expand > span {display:inline-block; font-size: 1.2857em; width: 22px; height: 22px; line-height: 22px;}
-	.expand .collapse-icon, 
-	.expand.expanded .expand-icon {display: none;}
-	.expand.expanded .collapse-icon {display: inline;}
-		/* Expandable items */
-		.expandable {overflow:hidden; height: 0;}
-		
-	/* URLs */
-	.url {white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.75em;}
-		
-	/* Categories */
-	.categories {padding-top: 0; padding-bottom: 0; background: #f3f7fc;}
-    .category {position: relative;}
-	.sub-parent {padding: 6px 0; min-height: 48px; display: flex; align-items: center;}
-	.sub-parent .text {padding-left: 0; }
-	.sub-parent button {}
-	.category:before {content: ""; border-bottom: 1px solid #d2dbed; display: block; margin-left: -15px; margin-right: -15px;}
-	.category:last-child:after {display: none;}
-		/* Category Expand Button */
-		.categories .expand {top: 13px;}
-        /* Category Progress bar */
-        .category .progress {left: -15px; right: -15px; height: 3px; opacity: 1;}
-		
-	/* Stylesheet Items */
-	.stylesheet-container .button-wrap {padding-left: 25px;}
-	.stylesheet-container .panel-heading {padding-left: 15px;}
-	.stylesheet-container .panel-body {padding-left: 15px;}
-	.stylesheet-item-wrap {padding-left: 25px;}
-	.stylesheet-item {position: relative; padding: 15px 25px; border-top: 1px solid #d2dbed;}
-	.stylesheet-item .text {padding: 0 105px 0 0; font-weight: bold;}
-    .stylesheet-item button {top: 20px;}
-	.stylesheet-item img {max-width: 100%; margin: 10px 0;}
-    .stylesheet-item a {cursor: pointer;}
-	/* Font example */
-	.font-example {font-size: 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+/* Panel */
+.tab-content {margin-bottom: 50px; overflow: hidden; transition: opacity 500ms ease;}
+.tab-content.active {opacity: 1; position: static;}
 
-	/* Download Progress modal */
-	.modal { display: flex; align-items: center; justify-content: center; }
+/* Tabs */
+.nav-container {margin-top: 20px;}
+.nav-pills li a {text-transform: capitalize; color: #fff; background: rgba(51,122,183,0.5); margin: 0 6px 10px 0; cursor: pointer; text-shadow: 1px 1px 3px rgba(0,0,0,0.35);}
+.nav-pills li a:hover {background: rgba(51,122,183,1); border-color: transparent;}
+.nav-container .btn {width: 100%; padding: 10px 15px; margin-bottom: 20px;}
+
+/* Heading */
+.text {display: inline-block; word-break: break-word; padding-left: 25px;}
+.panel-heading {position: relative; min-height: 48px; border: none; background: #fff; border-top: 1px solid #d2dbed; border-radius: 0; padding: 15px 25px}
+.item:first-child .panel-heading {border-top: none;}
+.panel-body {background: #f3f7fc; padding: 15px 25px;}
+
+/* Expand Button */
+.expand {position: absolute; top: 6px; left: 0; display:inline-block; cursor: pointer; color: #666;}
+.expand > span {display:inline-block; font-size: 1.2857em; width: 22px; height: 22px; line-height: 22px;}
+.expand .collapse-icon, 
+.expand.expanded .expand-icon {display: none;}
+.expand.expanded .collapse-icon {display: inline;}
+	/* Expandable items */
+	.expandable {overflow:hidden; height: 0;}
+	
+/* URLs */
+.url {white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.75em;}
+	
+/* Categories */
+.categories {padding-top: 0; padding-bottom: 0; background: #f3f7fc;}
+.category {position: relative;}
+.sub-parent {padding: 6px 0; min-height: 48px; display: flex; align-items: center;}
+.sub-parent .text {padding-left: 0; }
+.sub-parent button {}
+.category:before {content: ""; border-bottom: 1px solid #d2dbed; display: block; margin-left: -15px; margin-right: -15px;}
+.category:last-child:after {display: none;}
+	/* Category Expand Button */
+	.categories .expand {top: 13px;}
+	/* Category Progress bar */
+	.category .progress {left: -15px; right: -15px; height: 3px; opacity: 1;}
+	
+/* Stylesheet Items */
+.stylesheet-container .button-wrap {padding-left: 25px;}
+.stylesheet-container .panel-heading {padding-left: 15px;}
+.stylesheet-container .panel-body {padding-left: 15px;}
+.stylesheet-item-wrap {padding-left: 25px;}
+.stylesheet-item {position: relative; padding: 15px 25px; border-top: 1px solid #d2dbed;}
+.stylesheet-item .text {padding: 0 105px 0 0; font-weight: bold;}
+.stylesheet-item button {top: 20px;}
+.stylesheet-item img {max-width: 100%; margin: 10px 0;}
+.stylesheet-item a {cursor: pointer;}
+/* Font example */
+.font-example {font-size: 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+
+/* Download Progress modal */
+.modal { display: flex; align-items: center; justify-content: center; }
+.modal .checkbox { float: left; margin: 5px 0;}
+
+/* Buttons */
+.btn-warning,
+.btn-danger { text-shadow: 1px 1px 3px rgba(0,0,0,0.35); }

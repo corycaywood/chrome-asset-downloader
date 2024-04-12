@@ -4,6 +4,7 @@ import ConfirmationDialog from './ConfirmationDialog';
 
 interface Props extends React.PropsWithChildren {
     visible: boolean;
+    onClickCheckbox: (checked: boolean) => void;
     onRequestPermission: () => void;
     onCancel: () => void;
 }
@@ -15,6 +16,7 @@ function PermissionDeniedDialog(props: Props) {
             title="Permission was denied"
             confirmText={"Grant permission"}
             cancelText={"Continue without permission"}
+            onClickCheckbox={props.onClickCheckbox}
             onClickConfirm={props.onRequestPermission}
             onClickCancel={props.onCancel}
         >

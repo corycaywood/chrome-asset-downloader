@@ -10,12 +10,13 @@ import { pickResources } from '../../utils/pick-resources';
 import { ResourceDownloader } from '../../actions/download';
 
 interface Props {
-    active: ResourceName,
-    tabNames: ResourceName[],
-    resources: Resources,
-    onChangeTab: (name: ResourceName) => void,
-    onDownloadAll: (resources: Resource[]) => void
-    onDownload: ResourceDownloader
+    active: ResourceName;
+    tabNames: ResourceName[];
+    resources: Resources;
+    message?:  ReactNode;
+    onChangeTab: (name: ResourceName) => void;
+    onDownloadAll: (resources: Resource[]) => void;
+    onDownload: ResourceDownloader;
 }
 
 function ResourceContainer(props: Props) {
@@ -33,6 +34,7 @@ function ResourceContainer(props: Props) {
             
             <FullRow>
                 <p>Files will be downloaded as a <strong>ZIP file</strong>.</p>
+                {props.message}
             </FullRow>
 
             <FullRow>

@@ -7,6 +7,7 @@ interface Props extends React.PropsWithChildren {
     title: string;
     confirmText: string;
     cancelText: string;
+    onClickCheckbox?: (checked: boolean) => void;
     onClickConfirm: () => void;
     onClickCancel: () => void;
 }
@@ -14,6 +15,17 @@ interface Props extends React.PropsWithChildren {
 function ConfirmationDialog(props: Props) {
     const renderButtons = () => (
         <>
+            {props.onClickCheckbox && (
+                <span className="checkbox">
+                    <label>
+                        <input 
+                            type="checkbox" 
+                            onClick={(e) => props.onClickCheckbox && props.onClickCheckbox(e.currentTarget.checked)}
+                        />
+                            Don't ask again
+                    </label>
+                </span>
+            )}
             <button 
                 className="btn btn-default" 
                 onClick={props.onClickCancel}

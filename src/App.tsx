@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import './css/style.css';
 
@@ -11,7 +11,8 @@ import download from './actions/download';
 import subscribeResources from './actions/subscribe-resources';
 import getPageTitle from './actions/get-page-title';
 import downloadAll from './actions/download-all';
-import requestHostPermission from './actions/request-host-permission';
+import { requestHostPermission, checkHostPermission } from './actions/permissions';
+import storage from './actions/storage';
 import zipFileName from './utils/zip-file-name';
 
 const tabNames = [ResourceName.stylesheets, ResourceName.scripts, ResourceName.images, ResourceName.fonts];
@@ -22,10 +23,40 @@ function App() {
     const [isDownloading, setIsDownloading] = useState(false);
     const [downloadProgress, setDownloadProgress] = useState(0);
     const [permissionDialogProps, setPermissionDialogProps] = useState<{onConfirm: () => void, onCancel: () => void} | null>();
+    const [hasHostPermission, setHasHostPermission] = useState(false);
+    const [dontAskPermissions, setDontAskPermissions] = useState(storage.dontAskPermissions());
+    const [warningMessage, setWarningMessage] = useState<ReactNode | null>();
 
     useEffect(() => {
         subscribeResources(resources => setResources(resources));
+
+        checkHostPermission().then(hasPermission => {
+            if (hasPermission != hasHostPermission) {
+                setHasHostPermission(hasPermission);
+            }
+        });
     }, []);
+
+    useEffect(() => {
+        if (!hasHostPermission && storage.dontAskPermissions()) {
+            const onClickGrant = async () => {
+                const isGranted = await requestHostPermission();
+                setHasHostPermission(isGranted);
+            };
+
+            setWarningMessage(
+                <>
+                    <p>
+                        <strong>Warning:</strong> You have denied the "Host" permission to this plugin, so downloads of some files might fail. 
+                        Click the button below to grant the permission.
+                    </p>
+                    <p><button className='btn btn-warning' onClick={onClickGrant}>Grant Permission</button></p>
+                </>
+            );
+        } else {
+            setWarningMessage(null);
+        }
+    }, [dontAskPermissions, hasHostPermission]);
 
     const onDownloadProgress = (progress: number) => setDownloadProgress(progress);
 
@@ -38,15 +69,26 @@ function App() {
             setIsDownloading(false);
         }
 
-        const hasPermission = await requestHostPermission();
-        if (!hasPermission) {
+        if (storage.dontAskPermissions()) {
+            downloadResources();
+            return;
+        }
+
+        const isGranted = await requestHostPermission();
+        setHasHostPermission(isGranted);
+        if (!isGranted) {
+            const onDismissDialog = () => {
+                setPermissionDialogProps(null);
+                setDontAskPermissions(storage.dontAskPermissions());
+            };
+
             setPermissionDialogProps({
                 onConfirm: () => {
-                    setPermissionDialogProps(null);
+                    onDismissDialog();
                     onDownloadAll(resources);
                 },
                 onCancel: () => {
-                    setPermissionDialogProps(null);
+                    onDismissDialog();
                     downloadResources();
                 }
             })
@@ -61,7 +103,8 @@ function App() {
             <ResourceContainer 
                 active={active} 
                 tabNames={tabNames} 
-                resources={resources} 
+                resources={resources}
+                message={warningMessage}
                 onChangeTab={(name: ResourceName) => setActive(name)} 
                 onDownload={download}
                 onDownloadAll={onDownloadAll}
@@ -70,7 +113,8 @@ function App() {
             <DownloadDialog visible={isDownloading} progress={downloadProgress} />
 
             <PermissionDeniedDialog 
-                visible={permissionDialogProps != null} 
+                visible={permissionDialogProps != null}
+                onClickCheckbox={(checked) => storage.setDontAskPermissions(checked)}
                 onRequestPermission={() => permissionDialogProps && permissionDialogProps.onConfirm()}
                 onCancel={() => permissionDialogProps && permissionDialogProps.onCancel()}
             />
