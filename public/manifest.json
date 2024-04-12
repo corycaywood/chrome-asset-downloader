@@ -4,7 +4,7 @@
   "description": "Extends the Developer Tools, adding a sidebar that allows images, fonts, stylesheets, and scripts to be batch downloaded.",
   "devtools_page": "devtools.html",
   "manifest_version": 3,
-  "host_permissions": [
+  "optional_host_permissions": [
     "https://*/*"
   ]
 }

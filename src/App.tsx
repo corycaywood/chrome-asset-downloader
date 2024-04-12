@@ -4,12 +4,14 @@ import './css/style.css';
 
 import ResourceName from './components/resources/resource/ResourceName';
 import ResourceContainer from './components/resources/ResourceContainer';
-import DownloadDialog from './components/DownloadDialog';
+import DownloadDialog from './components/dialogs/DownloadDialog';
+import PermissionDeniedDialog from './components/dialogs/PermissionDeniedDialog';
 import { Resource, Resources, emptyResources } from './components/resources/resource/Resource';
 import download from './actions/download';
 import subscribeResources from './actions/subscribe-resources';
 import getPageTitle from './actions/get-page-title';
 import downloadAll from './actions/download-all';
+import requestHostPermission from './actions/request-host-permission';
 import zipFileName from './utils/zip-file-name';
 
 const tabNames = [ResourceName.stylesheets, ResourceName.scripts, ResourceName.images, ResourceName.fonts];
@@ -19,6 +21,7 @@ function App() {
     const [resources, setResources] = useState<Resources>(emptyResources);
     const [isDownloading, setIsDownloading] = useState(false);
     const [downloadProgress, setDownloadProgress] = useState(0);
+    const [permissionDialogProps, setPermissionDialogProps] = useState<{onConfirm: () => void, onCancel: () => void} | null>();
 
     useEffect(() => {
         subscribeResources(resources => setResources(resources));
@@ -27,11 +30,30 @@ function App() {
     const onDownloadProgress = (progress: number) => setDownloadProgress(progress);
 
     const onDownloadAll = async (resources: Resource[]) => {
-        setIsDownloading(true);
-        setDownloadProgress(0);
-        const title = await getPageTitle();
-        await downloadAll(resources, zipFileName(title), onDownloadProgress);
-        setIsDownloading(false);
+        const downloadResources = async () => {
+            setIsDownloading(true);
+            setDownloadProgress(0);
+            const title = await getPageTitle();
+            await downloadAll(resources, zipFileName(title), onDownloadProgress);
+            setIsDownloading(false);
+        }
+
+        const hasPermission = await requestHostPermission();
+        if (!hasPermission) {
+            setPermissionDialogProps({
+                onConfirm: () => {
+                    setPermissionDialogProps(null);
+                    onDownloadAll(resources);
+                },
+                onCancel: () => {
+                    setPermissionDialogProps(null);
+                    downloadResources();
+                }
+            })
+            return;
+        }
+
+        downloadResources();
     }
 
     return (
@@ -44,7 +66,14 @@ function App() {
                 onDownload={download}
                 onDownloadAll={onDownloadAll}
                 />
+            
             <DownloadDialog visible={isDownloading} progress={downloadProgress} />
+
+            <PermissionDeniedDialog 
+                visible={permissionDialogProps != null} 
+                onRequestPermission={() => permissionDialogProps && permissionDialogProps.onConfirm()}
+                onCancel={() => permissionDialogProps && permissionDialogProps.onCancel()}
+            />
         </div>
     );
 }

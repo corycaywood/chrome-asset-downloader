@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 
 interface Props extends React.PropsWithChildren {
-    visible: boolean,
-    progress: number
+    visible: boolean;
+    title?: ReactNode;
+    footer?: ReactNode;
 }
 
 const ANIMATION_DURATION_MS = 150
 
-function DownloadDialog(props: Props) {
+function Dialog(props: Props) {
     const [display, setDisplay] = useState<'none' | 'block'>('none');
 
     useEffect(() => {
@@ -29,16 +30,15 @@ function DownloadDialog(props: Props) {
             <div className={'modal fade in'}>
                 <div className="modal-dialog" role="document"> 
                     <div className="modal-content"> 
-                        <div className="modal-header">
-                            <h4 className="modal-title">Downloading files...</h4>
-                        </div> 
-                        <div className="modal-body">
-                            <div className="progress" style={{marginTop: '15px'}}>
-                                <div className="progress-bar progress-bar-striped active" style={{width: `${props.progress}%`}}>
-                                    <span className="sr-only">{props.progress}% Complete</span>
-                                </div>
-                            </div>
-                        </div> 
+                        {props.title && (
+                            <div className="modal-header">
+                                <h4 className="modal-title">{props.title}</h4>
+                            </div> 
+                        )}
+                        <div className="modal-body">{props.children}</div>
+                        {props.footer && (
+                            <div className="modal-footer">{props.footer}</div>
+                        )}
                     </div>
                 </div> 
             </div>
@@ -49,4 +49,4 @@ function DownloadDialog(props: Props) {
     );
 }
 
-export default DownloadDialog;
+export default Dialog;
