@@ -16,7 +16,27 @@ export default async function createZip(
     const success: string[] = [];
     const failed: string[] = [];
 
-    const zipAction = (fileName: string, blob: Blob) => zipWriter.add(fileName, blob.stream());
+    const zipAction = async (fileName: string, blob: Blob) => {
+        let finished = false;
+        let incrementor = 0;
+
+        while(!finished) {
+            const fileNameIncremeted = incrementor == 0
+                ?  fileName
+                : `${fileName}(${incrementor})`;
+            try {
+                await zipWriter.add(fileNameIncremeted, blob.stream());
+                finished = true;
+            } catch(error: any) {
+                if (error.message == 'File already exists') {
+                    incrementor++;
+                } else {
+                    console.error(error);
+                    finished = true;
+                }
+            }
+        }
+    };
 
     for await (const urlsChunk of chunk(resources, concurrent)) {
         const results = await Promise.allSettled(
