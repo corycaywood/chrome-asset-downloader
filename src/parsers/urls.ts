@@ -8,9 +8,9 @@ const fileNameFromDataUri = (uri: string) => hash(uri).toString().replace(/^-/, 
         .split(';')[0];
 
 const fileNameFromUrl = (url: string) => url
-    .substring(0, (url.indexOf("#") == -1) ? url.length : url.indexOf("#"))
-    .substring(0, (url.indexOf("?") == -1) ? url.length : url.indexOf("?"))
     .substring(url.lastIndexOf("/") + 1, url.length)
+    .also(it => removeQueryParam(it))
+    .also(it => removeFragmentParam(it))
 
 const fileNameFrom = (url: string) => url.startsWith('data:') 
     ? fileNameFromDataUri(url) 
@@ -24,5 +24,25 @@ const extensionFrom = (url: string) => {
     
     return splitFileName.pop()
 }
+
+const removeQueryParam = (url: string) => url
+    .substring(0, lastIndexOrLength(url, '?'));
+
+const removeFragmentParam = (url: string) => url
+    .substring(0, lastIndexOrLength(url, '#'));
+
+const lastIndexOrLength = (text: string, search: string) => text.lastIndexOf(search) != -1 
+    ? text.lastIndexOf(search)
+    : text.length;
+
+declare global {
+    interface String {
+        also: (fun: (it: string) => string) => string
+    }
+}
+function also(this: string, fun: (it: string) => string) : string {
+    return fun(this);
+}
+String.prototype.also = also;
 
 export { fileNameFrom, extensionFrom };
