@@ -1,4 +1,4 @@
-import { groupBy, pick } from 'lodash';
+import { groupBy } from 'lodash';
 import { Resource, Resources } from '../components/resources/resource/Resource';
 import { getImagesFrom, getFontsFrom } from '../parsers/stylesheet';
 import ResourceName from '../components/resources/resource/ResourceName';
@@ -7,7 +7,7 @@ interface ChromeResource extends chrome.devtools.inspectedWindow.Resource {
     type: "stylesheet" | "script" | "sm-script" | "image" | "font" | "document"
 }
 
-export default async function subscribeResources(callback: (resources: Resources) => void) : Promise<void> {
+export default async function subscribeResources(callback: (resources: Resources) => void) {
     chrome.devtools.inspectedWindow.onResourceAdded.addListener(async () => callback(await getResources()));
     
     callback(await getResources());
@@ -25,7 +25,7 @@ const parseResources = async (chromeResources: ChromeResource[]) => {
     const groupedResources = groupBy(chromeResources, ({type}) => type);
 
     const resources = {
-        stylesheets: await urlsFromStylesheets(groupedResources.stylesheet),
+        stylesheets: await createStylesheetResource(groupedResources.stylesheet),
         scripts: createResource(groupedResources.script || [], ResourceName.scripts),
         images: createResource(groupedResources.image || [], ResourceName.images),
         fonts: createResource(groupedResources.font || [], ResourceName.fonts)
@@ -38,7 +38,7 @@ const parseResources = async (chromeResources: ChromeResource[]) => {
     }
 }
 
-const urlsFromStylesheets = (resources: ChromeResource[]) => Promise.all(resources.map(async (resource) => {
+const createStylesheetResource = (resources: ChromeResource[]) => Promise.all(resources.map(async (resource) => {
     const { content } = await getResourceContent(resource);
     const images = getImagesFrom(content || '', resource.url)
         .map(url => ({
@@ -67,13 +67,19 @@ const createResource = (resources: ChromeResource[], type: ResourceName): Resour
         getContent: async () => await getResourceContent(resource)
     }));
 
-const mergeImages = (resources: Resources) => resources.stylesheets.flatMap(it => it.images)
-    .filter(stylesheetImage => resources.images.find(image => image.url == stylesheetImage.url))
-    .concat(resources.images);
+const mergeImages = (resources: Resources) => mergeResources(
+    resources.stylesheets.flatMap(it => it.images),
+    resources.images
+)
 
-const mergeFonts = (resources: Resources) => resources.stylesheets.flatMap(it => it.fonts)
-    .filter(stylesheetFont => resources.fonts.find(font => font.url == stylesheetFont.url))
-    .concat(resources.fonts)
+const mergeFonts = (resources: Resources) => mergeResources(
+    resources.stylesheets.flatMap(it => it.fonts),
+    resources.fonts
+)
+
+const mergeResources = (first: Resource[], second: Resource[]) => first
+    .filter(firstResource => second.find(secondResource => firstResource.url == secondResource.url))
+    .concat(second)
 
 const getResourceContent = async (resource: ChromeResource) : Promise<{content: string, encoding: string}> => 
     new Promise(resolve => resource.getContent((content, encoding) => resolve({content, encoding})));

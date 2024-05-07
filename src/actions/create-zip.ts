@@ -16,7 +16,7 @@ export default async function createZip(
     const success: string[] = [];
     const failed: string[] = [];
 
-    const zipAction = async (fileName: string, blob: Blob) => {
+    const addToZip = async (fileName: string, blob: Blob) => {
         let finished = false;
         let incrementor = 0;
 
@@ -44,7 +44,7 @@ export default async function createZip(
                 const blob = await getResourceBlob(item);
                 const fileName = fileNameFrom(item.url);
 
-                zipAction(filenameWithPath(fileName, item.type.toLowerCase()), blob);
+                addToZip(filenameWithPath(fileName, item.type.toLowerCase()), blob);
                 onProgress(progress++ / resources.length * 100);
             })
         );
