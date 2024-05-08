@@ -1,7 +1,7 @@
 {
   "name": "Asset Downloader",
-  "version": "0.1.1",
-  "description": "Extends the Developer Tools, adding a sidebar that allows images, fonts, stylesheets, and scripts to be batch downloaded.",
+  "version": "1.0",
+  "description": "Lets you view and download all images, fonts, stylesheets, and scripts from a web page as a ZIP file.",
   "devtools_page": "devtools.html",
   "icons": {
     "16": "icon16.png",
